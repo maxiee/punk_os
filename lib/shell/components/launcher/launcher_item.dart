@@ -19,7 +19,7 @@ class LauncherItem extends StatelessWidget {
           Image.asset("assets/icons/${application.iconName}.png"),
           const SizedBox(height: 8),
           DefaultTextStyle(
-            style: TextStyle(),
+            style: TextStyle(color: Colors.white),
             child: Text(application.name ?? 'unknown'),
           ),
         ],
