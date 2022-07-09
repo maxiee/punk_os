@@ -33,14 +33,6 @@ class _DesktopState extends State<Desktop> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Desktop.wmController
           .addWindowEntry(shellEntry.newInstance(content: Shell(overlays: [])));
-      Desktop.wmController.addWindowEntry(WindowEntry(
-          layoutInfo: FreeformLayoutInfo(),
-          features: [],
-          properties: {
-            WindowEntry.id: 'hello',
-            WindowExtras.stableId: "hello",
-            WindowEntry.title: 'Hello'
-          }).newInstance(content: FlutterLogo(size: 60)));
     });
   }
 
@@ -64,7 +56,6 @@ class _DesktopState extends State<Desktop> {
           const WallpaperLayer(),
           Positioned.fill(
               child: WindowHierarchy(
-                  useParentSize: true,
                   controller: Desktop.wmController,
                   layoutDelegate: const PangolinLayoutDelegate())),
         ],

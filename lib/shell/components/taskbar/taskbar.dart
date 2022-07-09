@@ -15,6 +15,8 @@ limitations under the License.
 */
 
 import 'package:flutter/material.dart';
+import 'package:punk_os/shell/wm/properties.dart';
+import 'package:utopia_wm/wm.dart';
 
 class Taskbar extends StatefulWidget {
   final List<Widget>? leading;
@@ -33,10 +35,11 @@ class Taskbar extends StatefulWidget {
 class _TaskbarState extends State<Taskbar> {
   @override
   Widget build(BuildContext context) {
+    List<LiveWindowEntry> apps = WindowHierarchy.of(context).entries;
     return Positioned(
+      bottom: 0,
       left: 0,
       right: 0,
-      top: 0,
       height: 48,
       child: Container(
         child: Material(
@@ -51,7 +54,11 @@ class _TaskbarState extends State<Taskbar> {
                       mainAxisSize: MainAxisSize.min,
                       children: widget.leading ?? [const SizedBox.shrink()],
                     ),
-                    Expanded(child: Container()),
+                    Expanded(
+                        child: Row(
+                            children: apps
+                                .map((e) => Text(e.registry.extra.stableId))
+                                .toList())),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: widget.trailing ?? [const SizedBox.shrink()],

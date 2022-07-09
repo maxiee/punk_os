@@ -18,6 +18,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:punk_os/shell/components/taskbar/taskbar.dart';
+import 'package:punk_os/shell/components/taskbar/widgets/launch.dart';
+import 'package:punk_os/shell/wm/wm_api.dart';
 
 class Shell extends StatefulWidget {
   final List<ShellOverlay> overlays;
@@ -26,9 +28,20 @@ class Shell extends StatefulWidget {
 
   @override
   State<Shell> createState() => _ShellState();
+
+  static _ShellState of(BuildContext context, {bool listen = true}) {
+    return Provider.of<_ShellState>(context, listen: listen);
+  }
 }
 
 class _ShellState extends State<Shell> {
+  @override
+  void initState() {
+    Future(() {
+      WmAPI.of(context).openApp("Hello", "Hello", FlutterLogo(size: 60));
+    });
+  }
+
   Future<void> dismissOverlay(
     String overlayId, {
     Map<String, dynamic> args = const {},
@@ -36,6 +49,34 @@ class _ShellState extends State<Shell> {
     final ShellOverlay overlay =
         widget.overlays.firstWhere((o) => o.id == overlayId);
     await overlay._controller.requestDismiss(args);
+  }
+
+  Future<void> showOverlay(
+    String overlayId, {
+    Map<String, dynamic> args = const {},
+    bool dismissEverything = true,
+  }) async {
+    final ShellOverlay overlay =
+        widget.overlays.firstWhere((o) => o.id == overlayId);
+    if (dismissEverything) this.dismissEverything();
+    await overlay._controller.requestShow(args);
+  }
+
+  Future<void> toggleOverlay(
+    String overlayId, {
+    Map<String, dynamic> args = const {},
+  }) async {
+    if (!currentlyShown(overlayId)) {
+      await showOverlay(overlayId, args: args);
+    } else {
+      await dismissOverlay(overlayId, args: args);
+    }
+  }
+
+  bool currentlyShown(String overlayId) {
+    final ShellOverlay overlay =
+        widget.overlays.firstWhere((o) => o.id == overlayId);
+    return overlay._controller.showing;
   }
 
   List<String> get currentlyShownOverlays {
@@ -74,7 +115,8 @@ class _ShellState extends State<Shell> {
               },
               behavior: HitTestBehavior.translucent,
             )),
-            Taskbar(leading: [FlutterLogo()], trailing: [FlutterLogo()])
+            Taskbar(
+                leading: [const LauncherButton()], trailing: [FlutterLogo()])
           ],
         ),
       ),
