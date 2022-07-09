@@ -46,6 +46,8 @@ dependencies:
   ray_plan:
     git:
       url: http://192.168.31.48:23023/maxiee/ray_plan.git
+  get_it: ^7.2.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:punk_os/shell/components/taskbar/taskbar.dart';
 import 'package:punk_os/shell/components/taskbar/widgets/launch.dart';
+import 'package:punk_os/shell/components/taskbar/widgets/time.dart';
 import 'package:punk_os/shell/wm/wm_api.dart';
 
 class Shell extends StatefulWidget {
@@ -116,7 +117,7 @@ class _ShellState extends State<Shell> {
               },
               behavior: HitTestBehavior.translucent,
             )),
-            Taskbar(leading: [const LauncherButton()], trailing: [])
+            Taskbar(leading: [const LauncherButton()], trailing: [TaskTime()])
           ],
         ),
       ),
