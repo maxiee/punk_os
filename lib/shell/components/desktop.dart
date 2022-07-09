@@ -21,15 +21,27 @@ class _DesktopState extends State<Desktop> {
       properties: {
         WindowEntry.title: 'shell',
         WindowEntry.showOnTaskbar: false,
+        WindowEntry.icon: null,
       });
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Desktop.wmController
-          .addWindowEntry(shellEntry.newInstance(content: Shell(overlays: [])));
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   Desktop.wmController
+    //       .addWindowEntry(shellEntry.newInstance(content: ));
+    // });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Desktop.wmController.wmInsets = EdgeInsets.only(
+      left: 0,
+      top: 0,
+      right: 0,
+      bottom: 48,
+    );
   }
 
   @override
@@ -41,7 +53,8 @@ class _DesktopState extends State<Desktop> {
           Positioned.fill(
               child: WindowHierarchy(
                   controller: Desktop.wmController,
-                  layoutDelegate: const FreeformLayoutDelegate()))
+                  layoutDelegate: const FreeformLayoutDelegate())),
+          Shell(overlays: [])
         ],
       ),
     );

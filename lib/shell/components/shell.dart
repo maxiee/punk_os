@@ -17,6 +17,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:punk_os/shell/components/taskbar/taskbar.dart';
 
 class Shell extends StatefulWidget {
   final List<ShellOverlay> overlays;
@@ -73,6 +74,7 @@ class _ShellState extends State<Shell> {
               },
               behavior: HitTestBehavior.translucent,
             )),
+            Taskbar(leading: [FlutterLogo()], trailing: [FlutterLogo()])
           ],
         ),
       ),
