@@ -17,7 +17,13 @@ class _DesktopState extends State<Desktop> {
   Widget build(BuildContext context) {
     return SizedBox.expand(
       child: Stack(
-        children: const [WallpaperLayer()],
+        children: [
+          const WallpaperLayer(),
+          Positioned.fill(
+              child: WindowHierarchy(
+                  controller: Desktop.wmController,
+                  layoutDelegate: const FreeformLayoutDelegate()))
+        ],
       ),
     );
   }
