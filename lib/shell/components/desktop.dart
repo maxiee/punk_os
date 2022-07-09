@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:punk_os/shell/components/desktop/wallpaper.dart';
+import 'package:punk_os/shell/components/launcher/launcher_overlay.dart';
 import 'package:punk_os/shell/components/layout.dart';
 import 'package:punk_os/shell/components/shell.dart';
 import 'package:punk_os/shell/wm/properties.dart';
@@ -31,8 +32,8 @@ class _DesktopState extends State<Desktop> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Desktop.wmController
-          .addWindowEntry(shellEntry.newInstance(content: Shell(overlays: [])));
+      Desktop.wmController.addWindowEntry(shellEntry.newInstance(
+          content: Shell(overlays: [LauncherOverlay()])));
     });
   }
 

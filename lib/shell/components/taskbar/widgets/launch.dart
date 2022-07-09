@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import 'package:flutter/material.dart';
+import 'package:punk_os/shell/components/launcher/launcher_overlay.dart';
 import 'package:punk_os/shell/components/taskbar/taskbar_element.dart';
 
 class LauncherButton extends StatelessWidget {
@@ -23,9 +24,7 @@ class LauncherButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TaskbarElement(
-      // overlayID: provider.compactLauncher
-      //     ? CompactLauncherOverlay.overlayId
-      //     : LauncherOverlay.overlayId,
+      overlayID: LauncherOverlay.overlayId,
       child: Icon(
         Icons.apps_rounded,
         //size: 24,
