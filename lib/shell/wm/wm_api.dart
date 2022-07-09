@@ -77,10 +77,6 @@ class WmAPI {
       content: application.app,
       overrideProperties: {
         WindowEntry.title: application.name,
-        ToolbarWindowFeature.widget: PangolinWindowToolbar(
-          barColor: application.color,
-          textColor: application.appBarTextColor,
-        ),
         WindowEntry.icon: getAppIconProvider(
           application.systemExecutable,
           application.iconName,

@@ -43,6 +43,9 @@ dependencies:
   calculator:
     git:
       url: https://github.com/dahliaOS/calculator.git
+  ray_plan:
+    git:
+      url: http://192.168.31.48:23023/maxiee/ray_plan.git
 
 dev_dependencies:
   flutter_test:

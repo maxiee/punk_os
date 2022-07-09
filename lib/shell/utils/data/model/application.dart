@@ -26,7 +26,6 @@ class Application {
   final ApplicationCategory? category;
   final bool isTest;
   final String? iconName;
-  final Color color;
   final Color appBarTextColor;
   final bool supportsWeb;
   final bool systemExecutable;
@@ -39,7 +38,6 @@ class Application {
     this.description,
     this.iconName,
     required this.name,
-    required this.color,
     this.isTest = false,
     this.appBarTextColor = Colors.white,
     this.version,
@@ -55,7 +53,6 @@ class Application {
     this.iconName,
     required this.name,
     this.isTest = true,
-    required this.color,
     this.appBarTextColor = Colors.white,
     this.version = "TEST",
     this.supportsWeb = true,

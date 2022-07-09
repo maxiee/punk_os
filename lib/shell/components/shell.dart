@@ -39,6 +39,7 @@ class _ShellState extends State<Shell> {
   void initState() {
     Future(() {
       WmAPI.of(context).openApp("io.dahlia.calculator");
+      WmAPI.of(context).openApp('com.maxiee.rayplan');
     });
   }
 

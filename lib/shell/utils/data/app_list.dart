@@ -4,10 +4,10 @@ import 'package:calculator/calculator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:punk_os/shell/utils/data/model/application.dart';
+import 'package:ray_plan/main.dart';
 
 List<Application> get applications => <Application>[
       Application(
-        color: Colors.green,
         packageName: "io.dahlia.calculator",
         app: Calculator(),
         name: 'Calculator',
@@ -15,6 +15,13 @@ List<Application> get applications => <Application>[
         iconName: "calculator",
         category: ApplicationCategory.office,
       ),
+      Application(
+        app: MyApp(),
+        packageName: 'com.maxiee.rayplan',
+        name: 'RayPlan',
+        iconName: "calculator",
+        category: ApplicationCategory.office,
+      )
     ];
 
 Application getApp(String packageName) {
