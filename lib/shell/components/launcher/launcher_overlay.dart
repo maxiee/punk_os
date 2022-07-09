@@ -50,11 +50,15 @@ class _LauncherOverlayState extends State<LauncherOverlay>
       curve: CommonData.of(context).animationCurve(),
     );
     final apps = applications;
+
+    if (!controller.showing) return const SizedBox();
+
     return AnimatedBuilder(
       animation: _animation,
       builder: (BuildContext context, Widget? child) => FadeTransition(
           opacity: _animation,
-          child: Material(
+          child: Container(
+            color: Colors.black.withOpacity(0.8),
             child: Padding(
               padding: const EdgeInsets.all(28.0),
               child: GestureDetector(

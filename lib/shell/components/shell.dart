@@ -17,11 +17,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:punk_os/shell/components/launcher/launcher_overlay.dart';
 import 'package:punk_os/shell/components/taskbar/taskbar.dart';
 import 'package:punk_os/shell/components/taskbar/widgets/launch.dart';
 import 'package:punk_os/shell/components/taskbar/widgets/time.dart';
-import 'package:punk_os/widgets/box_container.dart';
 
 class Shell extends StatefulWidget {
   final List<ShellOverlay> overlays;
@@ -93,6 +91,7 @@ class _ShellState extends State<Shell> {
 
   void dismissEverything() {
     for (final String id in currentlyShownOverlays) {
+      debugPrint('dismiss $id');
       dismissOverlay(id);
     }
     setState(() {});
@@ -113,18 +112,8 @@ class _ShellState extends State<Shell> {
               },
               behavior: HitTestBehavior.translucent,
             )),
-            ValueListenableBuilder<bool>(
-              valueListenable: getShowingNotifier(LauncherOverlay.overlayId),
-              builder: (context, showing, child) => Positioned(
-                height: !showing ? 48 : MediaQuery.of(context).size.height,
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: const BoxSurface(),
-              ),
-            ),
             ...widget.overlays,
-            Taskbar(leading: [const LauncherButton()], trailing: [TaskTime()])
+            Taskbar(leading: [const LauncherButton()], trailing: [TaskTime()]),
           ],
         ),
       ),

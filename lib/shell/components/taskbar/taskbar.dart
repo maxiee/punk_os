@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import 'package:flutter/material.dart';
+import 'package:punk_os/shell/components/shell.dart';
 import 'package:punk_os/shell/components/taskbar/taskbar_item.dart';
 import 'package:punk_os/shell/wm/properties.dart';
 import 'package:utopia_wm/wm.dart';
@@ -56,11 +57,11 @@ class _TaskbarState extends State<Taskbar> {
                       children: widget.leading ?? [const SizedBox.shrink()],
                     ),
                     Expanded(
-                        child: Row(
+                        child: listenerWrapper(Row(
                             children: apps
                                 .map((e) => TaskbarItem(
                                     packageName: e.registry.extra.stableId))
-                                .toList())),
+                                .toList()))),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: widget.trailing ?? [const SizedBox.shrink()],
@@ -71,6 +72,18 @@ class _TaskbarState extends State<Taskbar> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget listenerWrapper(Widget child) {
+    return SizedBox.expand(
+      child: Listener(
+        onPointerDown: (event) {
+          Shell.of(context, listen: false).dismissEverything();
+        },
+        behavior: HitTestBehavior.translucent,
+        child: SizedBox.shrink(child: child),
       ),
     );
   }
