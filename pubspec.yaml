@@ -38,6 +38,7 @@ dependencies:
     git:
       url: https://github.com/dahliaOS/utopia.git
       ref: utopia
+  provider: ^6.0.1
 
 dev_dependencies:
   flutter_test:
