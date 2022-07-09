@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import 'package:flutter/material.dart';
+import 'package:punk_os/shell/components/taskbar/taskbar_item.dart';
 import 'package:punk_os/shell/wm/properties.dart';
 import 'package:utopia_wm/wm.dart';
 
@@ -57,7 +58,8 @@ class _TaskbarState extends State<Taskbar> {
                     Expanded(
                         child: Row(
                             children: apps
-                                .map((e) => Text(e.registry.extra.stableId))
+                                .map((e) => TaskbarItem(
+                                    packageName: e.registry.extra.stableId))
                                 .toList())),
                     Row(
                       mainAxisSize: MainAxisSize.min,
