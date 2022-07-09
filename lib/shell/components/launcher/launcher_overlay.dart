@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:punk_os/shell/components/launcher/launcher_item.dart';
 import 'package:punk_os/shell/components/shell.dart';
 import 'package:punk_os/shell/utils/data/app_list.dart';
 import 'package:punk_os/shell/utils/data/common_data.dart';
@@ -51,14 +52,21 @@ class _LauncherOverlayState extends State<LauncherOverlay>
     final apps = applications;
     return AnimatedBuilder(
       animation: _animation,
-      builder: (BuildContext context, Widget? child)  => FadeTransition(opacity: _animation,
-      child: Container(
-        child: GridView(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 6, childAspectRatio: 1.0),
-          children: apps.map((e) => Text(e.name ?? 'unknown')).toList(),
-        ),
-      )),
+      builder: (BuildContext context, Widget? child) => FadeTransition(
+          opacity: _animation,
+          child: Material(
+            child: Padding(
+              padding: const EdgeInsets.all(28.0),
+              child: GestureDetector(
+                onTap: () => requestDismiss({}),
+                child: GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 6, childAspectRatio: 1.0),
+                  children: apps.map((e) => LauncherItem(e)).toList(),
+                ),
+              ),
+            ),
+          )),
     );
   }
 }
