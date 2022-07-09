@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:punk_os/shell/utils/context_menus/context_menu.dart';
 import 'package:punk_os/shell/utils/context_menus/context_menu_item.dart';
 import 'package:punk_os/shell/utils/context_menus/core/context_menu_region.dart';
+import 'package:punk_os/shell/utils/data/app_list.dart';
 import 'package:punk_os/shell/wm/properties.dart';
 import 'package:utopia_wm/wm.dart';
 
@@ -59,8 +60,8 @@ class _TaskbarItemState extends State<TaskbarItem>
   @override
   Widget build(BuildContext context) {
     //Selected App
-    // final _app = applications
-    //     .firstWhere((element) => element.packageName == widget.packageName);
+    final _app = applications
+        .firstWhere((element) => element.packageName == widget.packageName);
 
     //Running apps
     //// ITS FAILING HERE
@@ -113,7 +114,7 @@ class _TaskbarItemState extends State<TaskbarItem>
               items: [
                 ContextMenuItem(
                   icon: Icons.info_outline_rounded,
-                  title: widget.packageName,
+                  title: _app.name ?? 'unknown',
                   onTap: () {},
                   shortcut: "",
                 ),

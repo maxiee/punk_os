@@ -38,7 +38,7 @@ class _ShellState extends State<Shell> {
   @override
   void initState() {
     Future(() {
-      WmAPI.of(context).openApp("Hello", "Hello", FlutterLogo(size: 60));
+      WmAPI.of(context).openApp("io.dahlia.calculator");
     });
   }
 
@@ -115,8 +115,7 @@ class _ShellState extends State<Shell> {
               },
               behavior: HitTestBehavior.translucent,
             )),
-            Taskbar(
-                leading: [const LauncherButton()], trailing: [FlutterLogo()])
+            Taskbar(leading: [const LauncherButton()], trailing: [])
           ],
         ),
       ),

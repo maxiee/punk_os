@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import 'package:flutter/material.dart';
+import 'package:punk_os/shell/utils/data/app_list.dart';
 import 'package:punk_os/shell/wm/properties.dart';
 import 'package:punk_os/shell/wm/window/surface.dart';
 import 'package:punk_os/shell/wm/window/toolbar.dart';
@@ -66,25 +67,25 @@ class WmAPI {
     _windowHierarchy.addWindowEntry(entry);
   }
 
-  void openApp(String title, String stableId, Widget content) {
-    // final application = getApp(packageName);
-    // if (!application.canBeOpened) {
-    //   return;
-    //   // throw 'The app couldn not be opened';
-    // }
+  void openApp(String packageName) {
+    final application = getApp(packageName);
+    if (!application.canBeOpened) {
+      return;
+      // throw 'The app couldn not be opened';
+    }
     final LiveWindowEntry _window = windowEntry.newInstance(
-      content: content,
+      content: application.app,
       overrideProperties: {
-        WindowEntry.title: title,
-        ToolbarWindowFeature.widget: const PangolinWindowToolbar(
-          barColor: Colors.grey,
-          textColor: Colors.white,
+        WindowEntry.title: application.name,
+        ToolbarWindowFeature.widget: PangolinWindowToolbar(
+          barColor: application.color,
+          textColor: application.appBarTextColor,
         ),
-        // WindowEntry.icon: getAppIconProvider(
-        //   application.systemExecutable,
-        //   application.iconName,
-        // ),
-        WindowExtras.stableId: stableId,
+        WindowEntry.icon: getAppIconProvider(
+          application.systemExecutable,
+          application.iconName,
+        ),
+        WindowExtras.stableId: packageName,
       },
       overrideLayout: (info) => info.copyWith(
         size: MediaQuery.of(context).size.width < 1920

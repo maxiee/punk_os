@@ -40,6 +40,9 @@ dependencies:
       ref: utopia
   provider: ^6.0.1
   collection: ^1.16.0
+  calculator:
+    git:
+      url: https://github.com/dahliaOS/calculator.git
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +67,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/icons/
     - assets/textures/
 
   # To add assets to your application, add an assets section, like this:
