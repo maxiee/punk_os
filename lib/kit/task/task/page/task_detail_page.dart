@@ -27,6 +27,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
       task.name = value['name'];
       task.finish = value['finish'] == true ? Task.kFinish : Task.kUnfinish;
       task.created = value['created'];
+      task.deadline = value['deadline'];
       saveTask(task);
       Navigator.of(context).pop();
     }
@@ -57,6 +58,9 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
               title: const Text('完成'),
               initialValue: task.finish == Task.kFinish,
             ),
+            const Text("截至时间"),
+            FormBuilderDateTimePicker(
+                name: 'deadline', initialDate: task.deadline),
             const Text("创建时间"),
             FormBuilderDateTimePicker(
                 name: 'created', initialValue: task.created),

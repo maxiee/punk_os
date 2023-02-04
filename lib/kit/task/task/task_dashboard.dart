@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:punk_os/kit/shell/dashboard/widget/dashboard_list.dart';
-import 'package:punk_os/kit/task/task/task_item.dart';
+import 'package:punk_os/kit/task/task/widget/task_item.dart';
 import 'package:punk_os/kit/task/task/task_model.dart';
 import 'package:punk_os/kit/task/task/task_service.dart';
 
