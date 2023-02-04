@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:punk_os/kit/db/db_service.dart';
 
 void main() {
+  DBService dbService = DBService();
+  GetIt.I.registerSingleton(dbService);
+
   runApp(const MyApp());
 }
 
