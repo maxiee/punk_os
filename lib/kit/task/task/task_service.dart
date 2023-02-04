@@ -18,6 +18,12 @@ Task createTaskWithTask(Task t) {
   return t;
 }
 
+Task toggleTask(Task t) {
+  t.finish = t.finish == Task.kFinish ? Task.kUnfinish : Task.kFinish;
+  GetIt.I.get<Database>().collection(kCollectionNameTask).storeMap(t.toMap());
+  return t;
+}
+
 List<Task> getRecentTasks(int limit) {
   return GetIt.I
       .get<Database>()
