@@ -17,3 +17,14 @@ Task createTaskWithTask(Task t) {
   GetIt.I.get<Database>().collection(kCollectionNameTask).storeMap(t.toMap());
   return t;
 }
+
+List<Task> getRecentTasks(int limit) {
+  return GetIt.I
+      .get<Database>()
+      .collection(kCollectionNameTask)
+      .where()
+      .limit(limit)
+      .findAll()
+      .map((e) => Task.fromMap(e))
+      .toList();
+}

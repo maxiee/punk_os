@@ -30,4 +30,13 @@ class Task {
         finish: map['finish'],
         created: DateTime.fromMillisecondsSinceEpoch(map['created']));
   }
+
+  @override
+  String toString() {
+    StringBuffer sb = StringBuffer();
+    sb.write(finish == kFinish ? "[√]" : "[ ]");
+    sb.write(' ');
+    sb.write(name);
+    return sb.toString();
+  }
 }
