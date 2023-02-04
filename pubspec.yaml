@@ -39,6 +39,8 @@ dependencies:
     path: D:/Ray/Code/Flutter/ray_db
   get_it: ^7.2.0
   path: ^1.8.2
+  prompt_dialog: ^1.0.9
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
