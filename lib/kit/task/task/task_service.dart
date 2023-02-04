@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:punk_os/base/event_bus/event_bus.dart';
+import 'package:punk_os/constant.dart';
 import 'package:punk_os/kit/task/task/task_model.dart';
 import 'package:ray_db/ray_db.dart';
 import 'package:uuid/uuid.dart';
@@ -21,6 +23,7 @@ Task createTaskWithTask(Task t) {
 Task toggleTask(Task t) {
   t.finish = t.finish == Task.kFinish ? Task.kUnfinish : Task.kFinish;
   GetIt.I.get<Database>().collection(kCollectionNameTask).storeMap(t.toMap());
+  GetIt.I.get<EventBus>().dispatch(kEventRefresh);
   return t;
 }
 

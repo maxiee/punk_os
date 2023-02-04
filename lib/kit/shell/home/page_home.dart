@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:prompt_dialog/prompt_dialog.dart';
+import 'package:punk_os/base/event_bus/event_bus.dart';
+import 'package:punk_os/constant.dart';
 import 'package:punk_os/kit/task/task/task_dashboard.dart';
 import 'package:punk_os/kit/task/task/task_service.dart';
 
@@ -11,6 +14,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    super.initState();
+    GetIt.I.get<EventBus>().register(kEventRefresh, refresh);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    GetIt.I.get<EventBus>().dispose(refresh);
+  }
+
+  void refresh() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +48,6 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: const Text("新任务"),
             ),
-            MaterialButton(
-                onPressed: () => setState(() {}), child: const Text('刷新'))
           ],
         ),
       ),
