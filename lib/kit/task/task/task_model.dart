@@ -1,15 +1,15 @@
 /// 任务
 class Task {
   Task(
-      {required this.uuid,
-      required this.name,
+      {required this.name,
       required this.finish,
-      required this.created});
+      required this.created,
+      this.uuid});
 
   static const int kFinish = 1;
   static const int kUnfinish = 0;
 
-  String uuid;
+  String? uuid;
   String name;
   int finish; // 0 unfinish, 1 finish
   DateTime created;

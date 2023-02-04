@@ -43,8 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 String? txt =
                     await prompt(context, title: const Text('输入任务名称'));
                 if (txt == null) return;
-                final t = createTaskWithName(txt);
-                debugPrint(t.toMap().toString());
+                createTaskWithName(txt);
               },
               child: const Text("新任务"),
             ),
