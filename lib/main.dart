@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:punk_os/base/event_bus/event_bus.dart';
 import 'package:punk_os/constant.dart';
 import 'package:punk_os/kit/shell/home/page_home.dart';
 import 'package:ray_db/ray_db.dart' as db;
@@ -16,6 +17,7 @@ void main() async {
       await db.openDatabase(File(path.join(dir.path, "punk_os.db")));
 
   GetIt.I.registerSingleton(database);
+  GetIt.I.registerSingleton(EventBus());
 
   runApp(const MyApp());
 }
