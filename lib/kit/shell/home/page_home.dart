@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            dashboardRecentTask(5),
+            dashboardRecentTask(context, 5),
             MaterialButton(
               onPressed: () async {
                 String? txt =

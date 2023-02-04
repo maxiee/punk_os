@@ -1,13 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:punk_os/kit/shell/dashboard/widget/dashboard_list.dart';
 import 'package:punk_os/kit/task/task/task_item.dart';
 import 'package:punk_os/kit/task/task/task_model.dart';
 import 'package:punk_os/kit/task/task/task_service.dart';
 
-DashboardList dashboardRecentTask(int limit) {
+DashboardList dashboardRecentTask(BuildContext context, int limit) {
   return DashboardList(
       title: "待办任务",
-      items: getRecentTasks(limit)
+      items: getRecentTasks(1000)
           .where((e) => e.finish == Task.kUnfinish)
-          .map((e) => taskListTile(e))
+          .map((e) => taskListTile(context, e))
           .toList());
 }
