@@ -7,11 +7,11 @@ import 'package:ray_db/ray_db.dart';
 const String kCollectionNameTask = 'task';
 
 Task createTaskWithName(String name) {
-  return createTaskWithTask(
+  return saveTask(
       Task(name: name, finish: Task.kUnfinish, created: DateTime.now()));
 }
 
-Task createTaskWithTask(Task t) {
+Task saveTask(Task t) {
   GetIt.I.get<Database>().collection(kCollectionNameTask).storeMap(t.toMap());
   GetIt.I.get<EventBus>().dispatch(kEventRefresh);
   return t;
