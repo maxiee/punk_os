@@ -30,7 +30,7 @@ class WikiPageController extends ChangeNotifier {
   }
 
   initWikiBlock() {
-    Block b = saveBlock(Block(name: "", content: ""));
+    Block b = saveBlock(Block(content: ""));
     blocks.add(b);
 
     updateWikiBlocks();
@@ -63,7 +63,7 @@ class WikiPageController extends ChangeNotifier {
     saveBlock(block);
     debugPrint('index = $index');
     debugPrint('blocksLength = ${blocks.length}');
-    Block newBlock = saveBlock(Block(name: "", content: ""));
+    Block newBlock = saveBlock(Block(content: ""));
     blocks.insert(index, newBlock);
 
     updateWikiBlocks();
@@ -76,7 +76,7 @@ class WikiPageController extends ChangeNotifier {
     saveBlock(block);
     debugPrint('index = $index');
     debugPrint('blocksLength = ${blocks.length}');
-    Block newBlock = saveBlock(Block(name: "", content: ""));
+    Block newBlock = saveBlock(Block(content: ""));
     if (index >= blocks.length - 1) {
       blocks.add(newBlock);
     } else {
