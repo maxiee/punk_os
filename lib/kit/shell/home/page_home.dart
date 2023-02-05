@@ -47,6 +47,11 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: const Text("新任务"),
             ),
+            MaterialButton(
+                onPressed: () async {
+                  Navigator.of(context).pushNamed("/editor");
+                },
+                child: const Text('编辑器测试页'))
           ],
         ),
       ),
