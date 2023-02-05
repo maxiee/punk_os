@@ -20,6 +20,12 @@ class WikiPageController extends ChangeNotifier {
       parseWikiBlocks(blockUuids);
       currentEdit = blocks.length - 1;
     }
+    assert(wiki.uuid != null);
+
+    debugPrint('setWiki');
+    debugPrint('currentEdit = $currentEdit');
+    debugPrint('blocksLength = ${blocks.length}');
+
     notifyListeners();
   }
 
@@ -28,8 +34,7 @@ class WikiPageController extends ChangeNotifier {
     blocks.add(b);
 
     updateWikiBlocks();
-
-    saveWiki(wiki);
+    wiki = saveWiki(wiki);
   }
 
   updateWikiBlocks() {
@@ -56,5 +61,21 @@ class WikiPageController extends ChangeNotifier {
 
   onSaveAndInsertAbrove(int index, Block block) {}
 
-  onSaveAndInsertBelow(int index, Block block) {}
+  onSaveAndInsertBelow(int index, Block block) {
+    saveBlock(block);
+    debugPrint('index = $index');
+    debugPrint('blocksLength = ${blocks.length}');
+    Block newBlock = saveBlock(Block(name: "", content: ""));
+    if (index >= blocks.length - 1) {
+      blocks.add(newBlock);
+    } else {
+      blocks.insert(index, newBlock);
+    }
+    currentEdit++;
+
+    updateWikiBlocks();
+    wiki = saveWiki(wiki);
+
+    notifyListeners();
+  }
 }

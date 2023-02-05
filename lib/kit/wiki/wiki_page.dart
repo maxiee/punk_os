@@ -56,13 +56,31 @@ class _WikiPageState extends State<WikiPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     MaterialButton(
-                        onPressed: () => null, child: const Text('上新块')),
+                        onPressed: () => null,
+                        child: const Icon(Icons.delete, color: Colors.red)),
                     MaterialButton(
-                        onPressed: () => null, child: const Text('下新块')),
+                        onPressed: () => null,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(Icons.add, color: Colors.blue),
+                            Icon(Icons.arrow_upward, color: Colors.blue)
+                          ],
+                        )),
+                    MaterialButton(
+                        onPressed: () => controller.onSaveAndInsertBelow(
+                            i, controller.blocks[i]),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(Icons.add, color: Colors.blue),
+                            Icon(Icons.arrow_downward, color: Colors.blue)
+                          ],
+                        )),
                     MaterialButton(
                         onPressed: () =>
                             controller.onSave(controller.blocks[i]),
-                        child: const Text('保存')),
+                        child: const Icon(Icons.save, color: Colors.blue)),
                   ],
                 ))
           ],

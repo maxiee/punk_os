@@ -7,9 +7,12 @@ import 'package:ray_db/ray_db.dart';
 const String kCollectionNameWiki = 'wiki';
 
 Wiki saveWiki(Wiki w) {
-  GetIt.I.get<Database>().collection(kCollectionNameWiki).storeMap(w.toMap());
+  final ret = GetIt.I
+      .get<Database>()
+      .collection(kCollectionNameWiki)
+      .storeMap(w.toMap());
   GetIt.I.get<EventBus>().dispatch(kEventRefresh);
-  return w;
+  return Wiki.fromMap(ret);
 }
 
 Wiki? getWikiByName(String name) {
