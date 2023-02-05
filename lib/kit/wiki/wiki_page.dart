@@ -59,7 +59,8 @@ class _WikiPageState extends State<WikiPage> {
                         onPressed: () => null,
                         child: const Icon(Icons.delete, color: Colors.red)),
                     MaterialButton(
-                        onPressed: () => null,
+                        onPressed: () => controller.onSaveAndInsertAbrove(
+                            i, controller.blocks[i]),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: const [
@@ -90,9 +91,20 @@ class _WikiPageState extends State<WikiPage> {
             onTap: () => setState(() {
                   controller.currentEdit = i;
                 }),
-            child: Markdown(
-              data: controller.blocks[i].content,
-              shrinkWrap: true,
+            child: Row(
+              children: [
+                Container(
+                  color: Colors.lightBlue,
+                  width: 4,
+                  height: 20,
+                ),
+                Expanded(
+                  child: Markdown(
+                    data: controller.blocks[i].content,
+                    shrinkWrap: true,
+                  ),
+                ),
+              ],
             )));
       }
     }

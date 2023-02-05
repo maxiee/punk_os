@@ -59,7 +59,18 @@ class WikiPageController extends ChangeNotifier {
     notifyListeners();
   }
 
-  onSaveAndInsertAbrove(int index, Block block) {}
+  onSaveAndInsertAbrove(int index, Block block) {
+    saveBlock(block);
+    debugPrint('index = $index');
+    debugPrint('blocksLength = ${blocks.length}');
+    Block newBlock = saveBlock(Block(name: "", content: ""));
+    blocks.insert(index, newBlock);
+
+    updateWikiBlocks();
+    wiki = saveWiki(wiki);
+
+    notifyListeners();
+  }
 
   onSaveAndInsertBelow(int index, Block block) {
     saveBlock(block);
@@ -69,7 +80,7 @@ class WikiPageController extends ChangeNotifier {
     if (index >= blocks.length - 1) {
       blocks.add(newBlock);
     } else {
-      blocks.insert(index, newBlock);
+      blocks.insert(index + 1, newBlock);
     }
     currentEdit++;
 
