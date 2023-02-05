@@ -5,6 +5,8 @@ import 'package:punk_os/base/event_bus/event_bus.dart';
 import 'package:punk_os/constant.dart';
 import 'package:punk_os/kit/task/task/task_dashboard.dart';
 import 'package:punk_os/kit/task/task/task_service.dart';
+import 'package:punk_os/kit/wiki/wiki_model.dart';
+import 'package:punk_os/kit/wiki/wiki_service.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -49,7 +51,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             MaterialButton(
                 onPressed: () async {
-                  Navigator.of(context).pushNamed("/editor");
+                  String wikiName = "编辑器测试页";
+                  Navigator.of(context).pushNamed("/wiki", arguments: {
+                    'wiki': getWikiByName(wikiName) ??
+                        Wiki(name: wikiName, blockList: "")
+                  });
                 },
                 child: const Text('编辑器测试页'))
           ],

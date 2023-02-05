@@ -11,3 +11,14 @@ Wiki saveWiki(Wiki w) {
   GetIt.I.get<EventBus>().dispatch(kEventRefresh);
   return w;
 }
+
+Wiki? getWikiByName(String name) {
+  final ret = GetIt.I
+      .get<Database>()
+      .collection(kCollectionNameWiki)
+      .where()
+      .eq('name', name)
+      .findFirst();
+  if (ret == null) return null;
+  return Wiki.fromMap(ret);
+}

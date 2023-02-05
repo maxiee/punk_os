@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:punk_os/base/event_bus/event_bus.dart';
 import 'package:punk_os/constant.dart';
-import 'package:punk_os/kit/markdown/editor/editor_page.dart';
 import 'package:punk_os/kit/shell/home/page_home.dart';
 import 'package:punk_os/kit/task/task/page/task_detail_page.dart';
+import 'package:punk_os/kit/wiki/wiki_page.dart';
 import 'package:ray_db/ray_db.dart' as db;
 import 'package:path/path.dart' as path;
 
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/task_detail': (context) => const TaskDetailPage(),
-        '/editor': (context) => const EditorPage(),
+        '/wiki': (context) => const WikiPage(),
       },
       home: const MyHomePage(),
     );

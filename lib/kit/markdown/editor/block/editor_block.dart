@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:markdown_editable_textinput/markdown_text_input.dart';
+import 'package:punk_os/kit/block/block_model.dart';
 
 class EditorBlock extends StatefulWidget {
-  const EditorBlock(this.initContent,
-      {super.key, this.onUpdate, this.onSubmit});
+  const EditorBlock(this.block, {super.key, this.onUpdate});
 
-  final String initContent;
+  final Block block;
   final Function(String)? onUpdate;
-  final Function()? onSubmit;
 
   @override
   State<EditorBlock> createState() => _EditorBlockState();
@@ -26,17 +25,10 @@ class _EditorBlockState extends State<EditorBlock> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      MarkdownTextInput(
-        widget.onUpdate!,
-        widget.initContent,
-        maxLines: 5,
-      ),
-      Positioned(
-          right: 0,
-          bottom: 8,
-          child: MaterialButton(
-              onPressed: widget.onSubmit, child: const Text("Save"))),
-    ]);
+    return MarkdownTextInput(
+      widget.onUpdate!,
+      widget.block.content,
+      maxLines: 5,
+    );
   }
 }
