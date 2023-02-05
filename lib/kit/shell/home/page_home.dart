@@ -40,24 +40,41 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             dashboardRecentTask(context, 5),
-            MaterialButton(
-              onPressed: () async {
-                String? txt =
-                    await prompt(context, title: const Text('输入任务名称'));
-                if (txt == null) return;
-                createTaskWithName(txt);
-              },
-              child: const Text("新任务"),
-            ),
-            MaterialButton(
-                onPressed: () async {
-                  String wikiName = "编辑器测试页";
-                  Navigator.of(context).pushNamed("/wiki", arguments: {
-                    'wiki': getWikiByName(wikiName) ??
-                        Wiki(name: wikiName, blockList: "")
-                  });
-                },
-                child: const Text('编辑器测试页'))
+            Wrap(
+              children: [
+                MaterialButton(
+                  onPressed: () async {
+                    String? txt =
+                        await prompt(context, title: const Text('输入任务名称'));
+                    if (txt == null) return;
+                    createTaskWithName(txt);
+                  },
+                  child: const Text("新任务"),
+                ),
+                MaterialButton(
+                    onPressed: () async {
+                      String wikiName = "编辑器测试页";
+                      Navigator.of(context).pushNamed("/wiki", arguments: {
+                        'wiki': getWikiByName(wikiName) ??
+                            saveWiki(Wiki(name: wikiName, blockList: ""))
+                      });
+                    },
+                    child: const Text('编辑器测试页')),
+                MaterialButton(
+                  onPressed: () async {
+                    String? wikiName =
+                        await prompt(context, title: const Text('输入Wiki名称'));
+                    if (wikiName == null) return;
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pushNamed("/wiki", arguments: {
+                      'wiki': getWikiByName(wikiName) ??
+                          saveWiki(Wiki(name: wikiName, blockList: ""))
+                    });
+                  },
+                  child: const Text("新 Wiki"),
+                ),
+              ],
+            )
           ],
         ),
       ),

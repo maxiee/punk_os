@@ -28,7 +28,7 @@ class _EditorBlockState extends State<EditorBlock> {
     return MarkdownTextInput(
       widget.onUpdate!,
       widget.block.content,
-      maxLines: 5,
+      maxLines: 15,
     );
   }
 }

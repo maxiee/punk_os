@@ -89,7 +89,10 @@ class _WikiPageState extends State<WikiPage> {
       } else {
         blocks.add(GestureDetector(
             onTap: () => setState(() {
-                  controller.onSave(controller.blocks[controller.currentEdit]);
+                  if (controller.currentEdit != -1) {
+                    controller
+                        .onSave(controller.blocks[controller.currentEdit]);
+                  }
                   controller.currentEdit = i;
                 }),
             child: Row(
