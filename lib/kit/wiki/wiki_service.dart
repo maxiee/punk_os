@@ -25,3 +25,14 @@ Wiki? getWikiByName(String name) {
   if (ret == null) return null;
   return Wiki.fromMap(ret);
 }
+
+List<Wiki> getRecentWikiw(int limit) {
+  return GetIt.I
+      .get<Database>()
+      .collection(kCollectionNameWiki)
+      .where()
+      .limit(limit)
+      .findAll()
+      .map((e) => Wiki.fromMap(e))
+      .toList();
+}
