@@ -1,26 +1,30 @@
 /// Wiki 页面
 class Wiki {
-  Wiki({required this.name, required this.blockList, this.uuid});
+  Wiki(
+      {required this.name,
+      required this.content,
+      required this.contentStr,
+      this.uuid});
 
   String? uuid;
   String name;
-  String blockList;
-
-  List<String> getBlockList() {
-    if (blockList.isEmpty) return [];
-    return blockList.split(',');
-  }
-
-  void setBlockList(List<String> list) {
-    blockList = list.join(',');
-  }
+  String content;
+  String contentStr;
 
   Map<String, dynamic> toMap() {
-    return {'uuid': uuid, 'name': name, 'content': blockList};
+    return {
+      'uuid': uuid,
+      'name': name,
+      'content': content,
+      'content_str': contentStr
+    };
   }
 
   static Wiki fromMap(Map<String, dynamic> map) {
     return Wiki(
-        uuid: map['uuid'], name: map['name'], blockList: map['content']);
+        uuid: map['uuid'],
+        name: map['name'],
+        contentStr: map['content_str'],
+        content: map['content']);
   }
 }

@@ -63,7 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     // ignore: use_build_context_synchronously
                     Navigator.of(context).pushNamed("/wiki", arguments: {
                       'wiki': getWikiByName(wikiName) ??
-                          saveWiki(Wiki(name: wikiName, blockList: ""))
+                          saveWiki(
+                              Wiki(name: wikiName, content: "", contentStr: ""))
                     });
                   },
                   child: const Text("新 Wiki"),
@@ -73,7 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       String wikiName = "编辑器测试页";
                       Navigator.of(context).pushNamed("/wiki", arguments: {
                         'wiki': getWikiByName(wikiName) ??
-                            saveWiki(Wiki(name: wikiName, blockList: ""))
+                            saveWiki(Wiki(
+                                name: wikiName, content: "", contentStr: ""))
                       });
                     },
                     child: const Text('编辑器测试页')),

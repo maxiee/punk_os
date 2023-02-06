@@ -12,7 +12,8 @@ DashboardList dashboardRecentWiki(BuildContext context, int limit) {
                 onTap: () {
                   Navigator.of(context).pushNamed("/wiki", arguments: {
                     'wiki': getWikiByName(e.name) ??
-                        saveWiki(Wiki(name: e.name, blockList: ""))
+                        saveWiki(
+                            Wiki(name: e.name, content: "", contentStr: ""))
                   });
                 },
               ))

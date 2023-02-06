@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:punk_os/kit/markdown/editor/block/editor_block.dart';
+import 'package:flutter/material.dart' as md;
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:punk_os/kit/wiki/wiki_model.dart';
-import 'package:punk_os/kit/wiki/wiki_page_controller.dart';
+import 'package:punk_os/kit/wiki/wiki_service.dart';
 
 class WikiPage extends StatefulWidget {
   const WikiPage({super.key});
@@ -12,113 +14,71 @@ class WikiPage extends StatefulWidget {
 }
 
 class _WikiPageState extends State<WikiPage> {
-  late WikiPageController controller;
+  bool init = false;
 
-  Wiki? wiki;
+  late QuillController _controller;
+  late Wiki wiki;
 
   @override
   void initState() {
     super.initState();
-    controller = WikiPageController();
-    controller.addListener(reload);
     Future(() {
       final arguments = (ModalRoute.of(context)?.settings.arguments ??
           <String, dynamic>{}) as Map;
       wiki = arguments['wiki'];
-      controller.setWiki(wiki!);
+      if (wiki.content.isNotEmpty) {
+        _controller = QuillController(
+            document: Document.fromJson(jsonDecode(wiki.content)),
+            selection: const TextSelection.collapsed(offset: 0));
+      } else {
+        _controller = QuillController.basic();
+      }
+      setState(() {
+        init = true;
+      });
     });
   }
 
   @override
   dispose() {
     super.dispose();
-    controller.removeListener(reload);
+    _controller.dispose();
   }
 
-  reload() {
-    setState(() {});
+  onSave() {
+    wiki.content = jsonEncode(_controller.document.toDelta().toJson());
+    wiki.contentStr = _controller.document.toPlainText();
+    wiki = saveWiki(wiki);
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> blocks = [];
-    for (int i = 0; i < controller.blocks.length; i++) {
-      if (controller.currentEdit == i) {
-        blocks.add(Stack(
-          children: [
-            EditorBlock(controller.blocks[i],
-                key: UniqueKey(),
-                onUpdate: (newContent) => controller.onUpdate(i, newContent)),
-            Positioned(
-                bottom: 8,
-                right: 0,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    MaterialButton(
-                        onPressed: () => null,
-                        child: const Icon(Icons.delete, color: Colors.red)),
-                    MaterialButton(
-                        onPressed: () => controller.onSaveAndInsertAbrove(
-                            i, controller.blocks[i]),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Icon(Icons.add, color: Colors.blue),
-                            Icon(Icons.arrow_upward, color: Colors.blue)
-                          ],
-                        )),
-                    MaterialButton(
-                        onPressed: () => controller.onSaveAndInsertBelow(
-                            i, controller.blocks[i]),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Icon(Icons.add, color: Colors.blue),
-                            Icon(Icons.arrow_downward, color: Colors.blue)
-                          ],
-                        )),
-                    MaterialButton(
-                        onPressed: () =>
-                            controller.onSave(controller.blocks[i]),
-                        child: const Icon(Icons.save, color: Colors.blue)),
-                  ],
-                ))
-          ],
-        ));
-      } else {
-        blocks.add(GestureDetector(
-            onTap: () => setState(() {
-                  if (controller.currentEdit != -1) {
-                    controller
-                        .onSave(controller.blocks[controller.currentEdit]);
-                  }
-                  controller.currentEdit = i;
-                }),
-            child: Row(
-              children: [
-                Container(
-                  color: Colors.lightBlue,
-                  width: 4,
-                  height: 20,
-                ),
-                Expanded(
-                  child: Markdown(
-                    data: controller.blocks[i].content,
-                    shrinkWrap: true,
-                  ),
-                ),
-              ],
-            )));
-      }
-    }
+    if (!init) return const CircularProgressIndicator();
     return Scaffold(
       appBar: AppBar(
-        title: Text(wiki?.name ?? ""),
+        title: md.Text(wiki.name),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: onSave,
+          ),
+        ],
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) => blocks[index],
-        itemCount: blocks.length,
+      body: Column(
+        children: [
+          QuillToolbar.basic(controller: _controller),
+          Expanded(
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: QuillEditor.basic(
+                  controller: _controller,
+                  readOnly: false, // true for view only mode
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
