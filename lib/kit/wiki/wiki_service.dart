@@ -15,12 +15,34 @@ Wiki saveWiki(Wiki w) {
   return Wiki.fromMap(ret);
 }
 
+List<Wiki> searchWikiByName(String name) {
+  return GetIt.I
+      .get<Database>()
+      .collection(kCollectionNameWiki)
+      .where()
+      .like('name', name)
+      .findAll()
+      .map((e) => Wiki.fromMap(e))
+      .toList();
+}
+
 Wiki? getWikiByName(String name) {
   final ret = GetIt.I
       .get<Database>()
       .collection(kCollectionNameWiki)
       .where()
       .eq('name', name)
+      .findFirst();
+  if (ret == null) return null;
+  return Wiki.fromMap(ret);
+}
+
+Wiki? getWikiByUUID(String uuid) {
+  final ret = GetIt.I
+      .get<Database>()
+      .collection(kCollectionNameWiki)
+      .where()
+      .eq('uuid', uuid)
       .findFirst();
   if (ret == null) return null;
   return Wiki.fromMap(ret);

@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as md;
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:punk_os/kit/quill/wiki_link.dart';
 import 'package:punk_os/kit/wiki/wiki_model.dart';
 import 'package:punk_os/kit/wiki/wiki_service.dart';
 
@@ -64,21 +66,48 @@ class _WikiPageState extends State<WikiPage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          QuillToolbar.basic(controller: _controller),
-          Expanded(
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: QuillEditor.basic(
-                  controller: _controller,
-                  readOnly: false, // true for view only mode
-                ),
+      body: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              QuillToolbar.basic(
+                  showAlignmentButtons: true,
+                  customButtons: [
+                    quillWikiLinkButton(context, _controller),
+                  ],
+                  embedButtons:
+                      FlutterQuillEmbeds.buttons(showFormulaButton: true),
+                  controller: _controller),
+              Expanded(
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: QuillEditor(
+                      controller: _controller,
+                      scrollController: ScrollController(),
+                      scrollable: true,
+                      focusNode: FocusNode(),
+                      autoFocus: true,
+                      readOnly: false,
+                      expands: false,
+                      padding: EdgeInsets.zero,
+                      keyboardAppearance: Brightness.light,
+                      embedBuilders: FlutterQuillEmbeds.builders(),
+                      onLaunchUrl: (url) {
+                        print(url);
+                        if (url.contains('wiki://')) {
+                          String uuid = url
+                              .replaceAll('wiki://', '')
+                              .replaceAll('https://', '');
+                          Navigator.of(context).pushNamed("/wiki",
+                              arguments: {'wiki': getWikiByUUID(uuid)});
+                        }
+                      },
+                    )),
               ),
-            ),
-          )
-        ],
+            ],
+          ),
+        ),
       ),
     );
   }
