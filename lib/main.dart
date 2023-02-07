@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      locale: Locale(Platform.localeName.split('_')[0]),
       routes: {
         '/task_detail': (context) => const TaskDetailPage(),
         '/wiki': (context) => const WikiPage(),
