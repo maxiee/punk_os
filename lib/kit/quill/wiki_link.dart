@@ -70,12 +70,13 @@ class WikiSearchPage extends StatefulWidget {
 }
 
 class _WikiSearchPageState extends State<WikiSearchPage> {
-  TextEditingController controller = TextEditingController();
+  late TextEditingController controller;
   List<Wiki> searchResults = [];
 
   @override
   void initState() {
     super.initState();
+    controller = TextEditingController(text: widget.initText);
     if (widget.initLink.isNotEmpty && widget.initLink.startsWith('wiki://')) {
       String uuid = widget.initLink.replaceFirst('wiki://', '');
       Wiki? wiki = getWikiByName(uuid);
@@ -105,19 +106,29 @@ class _WikiSearchPageState extends State<WikiSearchPage> {
           children: [
             const md.Text("输入Wiki名称"),
             TextField(controller: controller, onChanged: searchName),
-            Expanded(
-              child: ListView(
-                  children: searchResults
-                      .map((e) => ListTile(
-                            title: md.Text(e.name),
-                            subtitle: md.Text((e.contentStr.length > 50
-                                    ? e.contentStr.substring(0, 50)
-                                    : e.contentStr)
-                                .replaceAll('\n', '')),
-                            onTap: () => Navigator.of(context).pop(e),
-                          ))
-                      .toList()),
-            ),
+            if (searchResults.isNotEmpty)
+              Expanded(
+                child: ListView(
+                    children: searchResults
+                        .map((e) => ListTile(
+                              title: md.Text(e.name),
+                              subtitle: md.Text((e.contentStr.length > 50
+                                      ? e.contentStr.substring(0, 50)
+                                      : e.contentStr)
+                                  .replaceAll('\n', '')),
+                              onTap: () => Navigator.of(context).pop(e),
+                            ))
+                        .toList()),
+              ),
+            if (searchResults.isEmpty && controller.text.isNotEmpty)
+              MaterialButton(
+                onPressed: () {
+                  final wiki = saveWiki(
+                      Wiki(name: controller.text, content: "", contentStr: ""));
+                  Navigator.of(context).pop(wiki);
+                },
+                child: md.Text("创建新wiki：${controller.text}"),
+              )
           ],
         ));
   }
