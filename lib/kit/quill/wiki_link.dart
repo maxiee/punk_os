@@ -87,9 +87,13 @@ class _WikiSearchPageState extends State<WikiSearchPage> {
         searchResults = [Tuple3(wiki.name, wiki.uuid!, wiki.contentStr)];
       }
     } else {
+      final wikis = searchWikiByName(widget.initText)
+          .map((e) => Tuple3(e.name, e.uuid!, e.contentStr))
+          .toList();
       final alias = searchWikiAliasByName(widget.initText)
           .map((e) => Tuple3(e.name, e.wikiuuid, ""));
       searchResults.clear();
+      searchResults.addAll(wikis);
       searchResults.addAll(alias);
     }
   }
