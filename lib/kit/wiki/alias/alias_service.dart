@@ -37,6 +37,17 @@ WikiAlias? getWikiAliasByName(String name) {
   return WikiAlias.fromMap(ret);
 }
 
+List<WikiAlias> getWikiAliasByWikiUUID(String wikiUUID) {
+  return GetIt.I
+      .get<Database>()
+      .collection(kCollectionNameWikiAlias)
+      .where()
+      .eq('wikiuuid', wikiUUID)
+      .findAll()
+      .map((e) => WikiAlias.fromMap(e))
+      .toList();
+}
+
 WikiAlias? getWikiAliasByUUID(String uuid) {
   final ret = GetIt.I
       .get<Database>()

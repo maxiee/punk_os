@@ -34,8 +34,8 @@ void _openWikiLinkDialog(BuildContext context, QuillController controller) {
 
   Navigator.of(context)
       .push(MaterialPageRoute(
-          builder: ((context) =>
-              WikiSearchPage(initText: text!, initLink: link ?? ''))))
+          builder: (context) =>
+              WikiSearchPage(initText: text!, initLink: link ?? '')))
       .then((wiki) {
     if (wiki != null) {
       wiki as Wiki;
@@ -103,6 +103,7 @@ class _WikiSearchPageState extends State<WikiSearchPage> {
     return Scaffold(
         appBar: AppBar(title: const md.Text("链接wiki")),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const md.Text("输入Wiki名称"),
             TextField(controller: controller, onChanged: searchName),
