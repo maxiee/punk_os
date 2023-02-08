@@ -24,6 +24,7 @@ class _WikiPageState extends State<WikiPage> {
   late QuillController _controller;
   late Wiki wiki;
   List<WikiAlias> alias = [];
+  bool changed = false;
 
   @override
   void initState() {
@@ -39,6 +40,7 @@ class _WikiPageState extends State<WikiPage> {
       } else {
         _controller = QuillController.basic();
       }
+      _controller.addListener(onChange);
       setState(() {
         loadAlias();
         init = true;
@@ -49,6 +51,7 @@ class _WikiPageState extends State<WikiPage> {
   @override
   dispose() {
     super.dispose();
+    _controller.removeListener(onChange);
     _controller.dispose();
   }
 
@@ -56,6 +59,12 @@ class _WikiPageState extends State<WikiPage> {
     wiki.content = jsonEncode(_controller.document.toDelta().toJson());
     wiki.contentStr = _controller.document.toPlainText();
     wiki = saveWiki(wiki);
+  }
+
+  onChange() {
+    setState(() {
+      changed = true;
+    });
   }
 
   loadAlias() {
@@ -67,9 +76,11 @@ class _WikiPageState extends State<WikiPage> {
     if (!init) return const CircularProgressIndicator();
     List<String> names = [wiki.name];
     names.addAll(alias.map((e) => e.name));
+    String finalName = names.join('/');
+    if (changed) finalName += "*";
     return Scaffold(
       appBar: AppBar(
-        title: md.Text(names.join('/')),
+        title: md.Text(finalName),
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
@@ -111,7 +122,6 @@ class _WikiPageState extends State<WikiPage> {
                       keyboardAppearance: Brightness.light,
                       embedBuilders: FlutterQuillEmbeds.builders(),
                       onLaunchUrl: (url) {
-                        print(url);
                         if (url.contains('wiki://')) {
                           String uuid = url
                               .replaceAll('wiki://', '')
