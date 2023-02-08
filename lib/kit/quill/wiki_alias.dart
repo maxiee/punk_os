@@ -5,15 +5,17 @@ import 'package:punk_os/kit/wiki/alias/alias_model.dart';
 import 'package:punk_os/kit/wiki/alias/alias_service.dart';
 import 'package:punk_os/kit/wiki/wiki_model.dart';
 
-QuillCustomButton quillWikiAliasButton(BuildContext context, Wiki wiki) {
+QuillCustomButton quillWikiAliasButton(
+    BuildContext context, Wiki wiki, Function reloadAlias) {
   return QuillCustomButton(
       icon: Icons.comment_outlined,
-      onTap: () => _openWikiAliasPage(context, wiki));
+      onTap: () => _openWikiAliasPage(context, wiki, reloadAlias));
 }
 
-void _openWikiAliasPage(BuildContext context, Wiki wiki) {
+void _openWikiAliasPage(BuildContext context, Wiki wiki, Function reloadAlias) {
   Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => WikiAliasPage(wiki: wiki)));
+      .push(MaterialPageRoute(builder: (context) => WikiAliasPage(wiki: wiki)))
+      .then((value) => reloadAlias());
 }
 
 class WikiAliasPage extends StatefulWidget {
@@ -38,7 +40,7 @@ class _WikiAliasPageState extends State<WikiAliasPage> {
 
   void reloadAlias() {
     setState(() {
-      searchResults = getWikiAliasByWikiUUID(widget.wiki.name);
+      searchResults = getWikiAliasByWikiUUID(widget.wiki.uuid!);
     });
   }
 

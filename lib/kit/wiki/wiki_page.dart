@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as md;
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:punk_os/kit/quill/wiki_alias.dart';
 import 'package:punk_os/kit/quill/wiki_link.dart';
+import 'package:punk_os/kit/wiki/alias/alias_model.dart';
+import 'package:punk_os/kit/wiki/alias/alias_service.dart';
 import 'package:punk_os/kit/wiki/wiki_model.dart';
 import 'package:punk_os/kit/wiki/wiki_service.dart';
 
@@ -20,6 +23,7 @@ class _WikiPageState extends State<WikiPage> {
 
   late QuillController _controller;
   late Wiki wiki;
+  List<WikiAlias> alias = [];
 
   @override
   void initState() {
@@ -36,6 +40,7 @@ class _WikiPageState extends State<WikiPage> {
         _controller = QuillController.basic();
       }
       setState(() {
+        loadAlias();
         init = true;
       });
     });
@@ -53,12 +58,18 @@ class _WikiPageState extends State<WikiPage> {
     wiki = saveWiki(wiki);
   }
 
+  loadAlias() {
+    alias = getWikiAliasByWikiUUID(wiki.uuid!);
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!init) return const CircularProgressIndicator();
+    List<String> names = [wiki.name];
+    names.addAll(alias.map((e) => e.name));
     return Scaffold(
       appBar: AppBar(
-        title: md.Text(wiki.name),
+        title: md.Text(names.join('/')),
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
@@ -75,6 +86,7 @@ class _WikiPageState extends State<WikiPage> {
                   showAlignmentButtons: true,
                   customButtons: [
                     quillWikiLinkButton(context, _controller),
+                    quillWikiAliasButton(context, wiki, loadAlias),
                   ],
                   embedButtons:
                       FlutterQuillEmbeds.buttons(showFormulaButton: true),
