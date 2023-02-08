@@ -136,7 +136,8 @@ class _WikiSearchPageState extends State<WikiSearchPage> {
                 onPressed: () {
                   final wiki = saveWiki(
                       Wiki(name: controller.text, content: "", contentStr: ""));
-                  Navigator.of(context).pop(wiki);
+                  Navigator.of(context)
+                      .pop(Tuple3(wiki.name, wiki.uuid!, wiki.contentStr));
                 },
                 child: md.Text("创建新wiki：${controller.text}"),
               )

@@ -3,11 +3,13 @@ import 'package:get_it/get_it.dart';
 import 'package:prompt_dialog/prompt_dialog.dart';
 import 'package:punk_os/base/event_bus/event_bus.dart';
 import 'package:punk_os/constant.dart';
+import 'package:punk_os/kit/quill/wiki_link.dart';
 import 'package:punk_os/kit/task/task/task_dashboard.dart';
 import 'package:punk_os/kit/task/task/task_service.dart';
 import 'package:punk_os/kit/wiki/wiki_dashboard.dart';
 import 'package:punk_os/kit/wiki/wiki_model.dart';
 import 'package:punk_os/kit/wiki/wiki_service.dart';
+import 'package:tuple/tuple.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -56,18 +58,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const Text("新任务"),
                 ),
                 MaterialButton(
-                  onPressed: () async {
-                    String? wikiName =
-                        await prompt(context, title: const Text('输入Wiki名称'));
-                    if (wikiName == null) return;
-                    // ignore: use_build_context_synchronously
-                    Navigator.of(context).pushNamed("/wiki", arguments: {
-                      'wiki': getWikiByName(wikiName) ??
-                          saveWiki(
-                              Wiki(name: wikiName, content: "", contentStr: ""))
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(
+                            builder: (context) => const WikiSearchPage(
+                                initLink: "", initText: "")))
+                        .then((wiki) {
+                      if (wiki != null) {
+                        wiki as Tuple3<String, String, String>;
+                        Navigator.of(context).pushNamed('/wiki',
+                            arguments: {'wiki': getWikiByUUID(wiki.item2)});
+                      }
                     });
                   },
-                  child: const Text("新 Wiki"),
+                  child: const Text("Wiki"),
                 ),
                 MaterialButton(
                     onPressed: () async {
