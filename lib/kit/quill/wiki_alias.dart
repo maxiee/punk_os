@@ -4,6 +4,8 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:punk_os/kit/wiki/alias/alias_model.dart';
 import 'package:punk_os/kit/wiki/alias/alias_service.dart';
 import 'package:punk_os/kit/wiki/wiki_model.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 QuillCustomButton quillWikiAliasButton(
     BuildContext context, Wiki wiki, Function reloadAlias) {
@@ -48,6 +50,12 @@ class _WikiAliasPageState extends State<WikiAliasPage> {
     String newAlias = controller.text;
     if (newAlias.isEmpty) return;
     assert(widget.wiki.uuid != null);
+
+    if (getWikiAliasByName(newAlias) != null) {
+      QuickAlert.show(
+          context: context, type: QuickAlertType.error, text: "该别名已存在！");
+      return;
+    }
     final alias = WikiAlias(name: newAlias, wikiuuid: widget.wiki.uuid!);
     saveWikiAlias(alias);
     controller.clear();
