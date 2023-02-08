@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as md;
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:punk_os/kit/wiki/alias/alias_service.dart';
 import 'package:punk_os/kit/wiki/wiki_model.dart';
 import 'package:punk_os/kit/wiki/wiki_service.dart';
 import 'package:flutter_quill/src/widgets/link.dart';
+import 'package:tuple/tuple.dart';
 
 QuillCustomButton quillWikiLinkButton(
     BuildContext context, QuillController controller) {
@@ -38,9 +40,9 @@ void _openWikiLinkDialog(BuildContext context, QuillController controller) {
               WikiSearchPage(initText: text!, initLink: link ?? '')))
       .then((wiki) {
     if (wiki != null) {
-      wiki as Wiki;
-      String text = wiki.name;
-      String link = 'wiki://${wiki.uuid}';
+      wiki as Tuple3<String, String, String>;
+      String text = wiki.item1;
+      String link = 'wiki://${wiki.item2}';
 
       var index = controller.selection.start;
       var length = controller.selection.end - index;
@@ -71,7 +73,8 @@ class WikiSearchPage extends StatefulWidget {
 
 class _WikiSearchPageState extends State<WikiSearchPage> {
   late TextEditingController controller;
-  List<Wiki> searchResults = [];
+  // tuple wiki name and uuid
+  List<Tuple3<String, String, String>> searchResults = [];
 
   @override
   void initState() {
@@ -81,7 +84,7 @@ class _WikiSearchPageState extends State<WikiSearchPage> {
       String uuid = widget.initLink.replaceFirst('wiki://', '');
       Wiki? wiki = getWikiByName(uuid);
       if (wiki != null) {
-        searchResults = [wiki];
+        searchResults = [Tuple3(wiki.name, wiki.uuid!, wiki.contentStr)];
       }
     }
   }
@@ -94,7 +97,14 @@ class _WikiSearchPageState extends State<WikiSearchPage> {
 
   searchName(String name) {
     setState(() {
-      searchResults = searchWikiByName(name);
+      final wikis = searchWikiByName(name)
+          .map((e) => Tuple3(e.name, e.uuid!, e.contentStr))
+          .toList();
+      final alias = searchWikiAliasByName(name)
+          .map((e) => Tuple3(e.name, e.wikiuuid, ""));
+      searchResults.clear();
+      searchResults.addAll(wikis);
+      searchResults.addAll(alias);
     });
   }
 
@@ -112,10 +122,10 @@ class _WikiSearchPageState extends State<WikiSearchPage> {
                 child: ListView(
                     children: searchResults
                         .map((e) => ListTile(
-                              title: md.Text(e.name),
-                              subtitle: md.Text((e.contentStr.length > 50
-                                      ? e.contentStr.substring(0, 50)
-                                      : e.contentStr)
+                              title: md.Text(e.item1),
+                              subtitle: md.Text((e.item3.length > 50
+                                      ? e.item3.substring(0, 50)
+                                      : e.item3)
                                   .replaceAll('\n', '')),
                               onTap: () => Navigator.of(context).pop(e),
                             ))
