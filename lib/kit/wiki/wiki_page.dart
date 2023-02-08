@@ -86,7 +86,12 @@ class _WikiPageState extends State<WikiPage> {
                   showAlignmentButtons: true,
                   customButtons: [
                     quillWikiLinkButton(context, _controller),
-                    quillWikiAliasButton(context, wiki, loadAlias),
+                    quillWikiAliasButton(
+                        context,
+                        wiki,
+                        () => setState(() {
+                              loadAlias();
+                            })),
                   ],
                   embedButtons:
                       FlutterQuillEmbeds.buttons(showFormulaButton: true),
