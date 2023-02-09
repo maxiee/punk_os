@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as md;
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:punk_os/kit/quill/quill_style.dart';
 import 'package:punk_os/kit/quill/wiki_alias.dart';
 import 'package:punk_os/kit/quill/wiki_link.dart';
 import 'package:punk_os/kit/wiki/alias/alias_model.dart';
@@ -125,6 +126,7 @@ class _WikiPageState extends State<WikiPage> {
                               arguments: {'wiki': getWikiByUUID(uuid)});
                         }
                       },
+                      customStyles: defaultStyles(context),
                     )),
               ),
             ],
