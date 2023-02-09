@@ -15,6 +15,18 @@ Wiki saveWiki(Wiki w) {
   return Wiki.fromMap(ret);
 }
 
+Wiki toggleWikiMark(Wiki w) {
+  int? mark = w.mark;
+  if (mark == null) {
+    w.mark = 1;
+  } else if (mark == 1) {
+    w.mark = 0;
+  } else if (mark == 0) {
+    w.mark = 1;
+  }
+  return saveWiki(w);
+}
+
 List<Wiki> searchWikiByName(String name) {
   return GetIt.I
       .get<Database>()
@@ -48,12 +60,23 @@ Wiki? getWikiByUUID(String uuid) {
   return Wiki.fromMap(ret);
 }
 
-List<Wiki> getRecentWikiw(int limit) {
+List<Wiki> getRecentWiki(int limit) {
   return GetIt.I
       .get<Database>()
       .collection(kCollectionNameWiki)
       .where()
       .limit(limit)
+      .findAll()
+      .map((e) => Wiki.fromMap(e))
+      .toList();
+}
+
+List<Wiki> getMarkWiki() {
+  return GetIt.I
+      .get<Database>()
+      .collection(kCollectionNameWiki)
+      .where()
+      .eq('mark', 1)
       .findAll()
       .map((e) => Wiki.fromMap(e))
       .toList();

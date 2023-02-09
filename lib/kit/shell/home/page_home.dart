@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Expanded(child: dashboardRecentTask(context, 5)),
-              Expanded(child: dashboardRecentWiki(context, 5)),
+              Expanded(child: dashboardMarkWiki(context)),
             ]),
             Wrap(
               children: [

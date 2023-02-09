@@ -8,6 +8,7 @@ import 'package:punk_os/kit/quill/wiki_alias.dart';
 import 'package:punk_os/kit/quill/wiki_link.dart';
 import 'package:punk_os/kit/wiki/alias/alias_model.dart';
 import 'package:punk_os/kit/wiki/alias/alias_service.dart';
+import 'package:punk_os/kit/wiki/appbar/mark_button.dart';
 import 'package:punk_os/kit/wiki/wiki_model.dart';
 import 'package:punk_os/kit/wiki/wiki_service.dart';
 
@@ -72,6 +73,10 @@ class _WikiPageState extends State<WikiPage> {
       appBar: AppBar(
         title: md.Text(finalName),
         actions: [
+          MarkButton(wiki, (w) {
+            // fixme 后续使用状态管理
+            wiki = wiki;
+          }),
           IconButton(
             icon: const Icon(Icons.save),
             onPressed: onSave,
