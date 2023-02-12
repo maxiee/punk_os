@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as md;
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:flutter_treeview/flutter_treeview.dart';
 import 'package:punk_os/kit/quill/quill_style.dart';
 import 'package:punk_os/kit/quill/wiki_alias.dart';
 import 'package:punk_os/kit/quill/wiki_link.dart';
@@ -24,6 +25,7 @@ class _WikiPageState extends State<WikiPage> {
   bool init = false;
 
   late QuillController _controller;
+  late TreeViewController _treeViewController;
   late Wiki wiki;
   List<WikiAlias> alias = [];
 
@@ -41,6 +43,12 @@ class _WikiPageState extends State<WikiPage> {
       } else {
         _controller = QuillController.basic();
       }
+
+      // treeview controller
+      _treeViewController = TreeViewController(
+        children: [],
+      );
+
       setState(() {
         loadAlias();
         init = true;
@@ -72,7 +80,11 @@ class _WikiPageState extends State<WikiPage> {
     String finalName = names.join('/');
     return Scaffold(
       appBar: AppBar(
-        title: md.Text(finalName),
+        title: md.Text(
+          finalName,
+          style: const TextStyle(fontSize: 16),
+          maxLines: 3,
+        ),
         actions: [
           MarkButton(wiki, (w) {
             // fixme 后续使用状态管理
@@ -85,52 +97,68 @@ class _WikiPageState extends State<WikiPage> {
         ],
       ),
       body: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              QuillToolbar.basic(
-                  showAlignmentButtons: true,
-                  customButtons: [
-                    quillWikiLinkButton(context, _controller),
-                    quillWikiAliasButton(
-                        context,
-                        wiki,
-                        () => setState(() {
-                              loadAlias();
-                            })),
-                  ],
-                  embedButtons:
-                      FlutterQuillEmbeds.buttons(showFormulaButton: true),
-                  controller: _controller),
-              Expanded(
-                child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: QuillEditor(
-                      controller: _controller,
-                      scrollController: ScrollController(),
-                      scrollable: true,
-                      focusNode: FocusNode(),
-                      autoFocus: true,
-                      readOnly: false,
-                      expands: false,
-                      padding: EdgeInsets.zero,
-                      keyboardAppearance: Brightness.light,
-                      embedBuilders: FlutterQuillEmbeds.builders(),
-                      onLaunchUrl: (url) {
-                        if (url.contains('wiki://')) {
-                          String uuid = url
-                              .replaceAll('wiki://', '')
-                              .replaceAll('https://', '');
-                          Navigator.of(context).pushNamed("/wiki",
-                              arguments: {'wiki': getWikiByUUID(uuid)});
-                        }
-                      },
-                      customStyles: defaultStyles(context),
-                    )),
+        child: Row(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.19,
+              height: double.infinity,
+              child: TreeView(
+                controller: _treeViewController,
+                shrinkWrap: true,
               ),
-            ],
-          ),
+            ),
+            Container(
+              width: 1,
+              color: Colors.grey.shade300,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Column(
+                children: [
+                  QuillToolbar.basic(
+                      showAlignmentButtons: true,
+                      customButtons: [
+                        quillWikiLinkButton(context, _controller),
+                        quillWikiAliasButton(
+                            context,
+                            wiki,
+                            () => setState(() {
+                                  loadAlias();
+                                })),
+                      ],
+                      embedButtons:
+                          FlutterQuillEmbeds.buttons(showFormulaButton: true),
+                      controller: _controller),
+                  Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: QuillEditor(
+                          controller: _controller,
+                          scrollController: ScrollController(),
+                          scrollable: true,
+                          focusNode: FocusNode(),
+                          autoFocus: true,
+                          readOnly: false,
+                          expands: false,
+                          padding: EdgeInsets.zero,
+                          keyboardAppearance: Brightness.light,
+                          embedBuilders: FlutterQuillEmbeds.builders(),
+                          onLaunchUrl: (url) {
+                            if (url.contains('wiki://')) {
+                              String uuid = url
+                                  .replaceAll('wiki://', '')
+                                  .replaceAll('https://', '');
+                              Navigator.of(context).pushNamed("/wiki",
+                                  arguments: {'wiki': getWikiByUUID(uuid)});
+                            }
+                          },
+                          customStyles: defaultStyles(context),
+                        )),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
