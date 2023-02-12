@@ -10,6 +10,7 @@ import 'package:punk_os/kit/quill/wiki_link.dart';
 import 'package:punk_os/kit/wiki/alias/alias_model.dart';
 import 'package:punk_os/kit/wiki/alias/alias_service.dart';
 import 'package:punk_os/kit/wiki/appbar/mark_button.dart';
+import 'package:punk_os/kit/wiki/tree/wiki_treeview.dart';
 import 'package:punk_os/kit/wiki/wiki_model.dart';
 import 'package:punk_os/kit/wiki/wiki_service.dart';
 
@@ -85,52 +86,60 @@ class _WikiPageState extends State<WikiPage> {
         ],
       ),
       body: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              QuillToolbar.basic(
-                  showAlignmentButtons: true,
-                  customButtons: [
-                    quillWikiLinkButton(context, _controller),
-                    quillWikiAliasButton(
-                        context,
-                        wiki,
-                        () => setState(() {
-                              loadAlias();
-                            })),
-                  ],
-                  embedButtons:
-                      FlutterQuillEmbeds.buttons(showFormulaButton: true),
-                  controller: _controller),
-              Expanded(
-                child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: QuillEditor(
-                      controller: _controller,
-                      scrollController: ScrollController(),
-                      scrollable: true,
-                      focusNode: FocusNode(),
-                      autoFocus: true,
-                      readOnly: false,
-                      expands: false,
-                      padding: EdgeInsets.zero,
-                      keyboardAppearance: Brightness.light,
-                      embedBuilders: FlutterQuillEmbeds.builders(),
-                      onLaunchUrl: (url) {
-                        if (url.contains('wiki://')) {
-                          String uuid = url
-                              .replaceAll('wiki://', '')
-                              .replaceAll('https://', '');
-                          Navigator.of(context).pushNamed("/wiki",
-                              arguments: {'wiki': getWikiByUUID(uuid)});
-                        }
-                      },
-                      customStyles: defaultStyles(context),
-                    )),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 150,
+              child: Expanded(child: WikiTreeView(wiki: wiki)),
+            ),
+            Expanded(
+              child: Column(
+                children: [
+                  QuillToolbar.basic(
+                      showAlignmentButtons: true,
+                      customButtons: [
+                        quillWikiLinkButton(context, _controller),
+                        quillWikiAliasButton(
+                            context,
+                            wiki,
+                            () => setState(() {
+                                  loadAlias();
+                                })),
+                      ],
+                      embedButtons:
+                          FlutterQuillEmbeds.buttons(showFormulaButton: true),
+                      controller: _controller),
+                  Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: QuillEditor(
+                          controller: _controller,
+                          scrollController: ScrollController(),
+                          scrollable: true,
+                          focusNode: FocusNode(),
+                          autoFocus: true,
+                          readOnly: false,
+                          expands: false,
+                          padding: EdgeInsets.zero,
+                          keyboardAppearance: Brightness.light,
+                          embedBuilders: FlutterQuillEmbeds.builders(),
+                          onLaunchUrl: (url) {
+                            if (url.contains('wiki://')) {
+                              String uuid = url
+                                  .replaceAll('wiki://', '')
+                                  .replaceAll('https://', '');
+                              Navigator.of(context).pushNamed("/wiki",
+                                  arguments: {'wiki': getWikiByUUID(uuid)});
+                            }
+                          },
+                          customStyles: defaultStyles(context),
+                        )),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
