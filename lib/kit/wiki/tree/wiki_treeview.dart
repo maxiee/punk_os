@@ -27,10 +27,11 @@ class _WikiTreeViewState extends State<WikiTreeView> {
           Navigator.of(context).pushNamed("/wiki", arguments: {'wiki': wiki});
         },
         child: Padding(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.all(6.0),
           child: Text(prefixName(level) + wiki.name),
         ),
       ));
+      ret.add(Container(height: 1, color: Colors.grey.shade300));
       ret.add(refresh(getWikiChildren(wiki.uuid!), level: level + 1));
     }
     return Column(

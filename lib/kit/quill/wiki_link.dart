@@ -140,16 +140,15 @@ class _WikiSearchPageState extends State<WikiSearchPage> {
                             ))
                         .toList()),
               ),
-            if (searchResults.isEmpty && controller.text.isNotEmpty)
-              MaterialButton(
-                onPressed: () {
-                  final wiki = saveWiki(
-                      Wiki(name: controller.text, content: "", contentStr: ""));
-                  Navigator.of(context)
-                      .pop(Tuple3(wiki.name, wiki.uuid!, wiki.contentStr));
-                },
-                child: md.Text("创建新wiki：${controller.text}"),
-              )
+            MaterialButton(
+              onPressed: () {
+                final wiki = saveWiki(
+                    Wiki(name: controller.text, content: "", contentStr: ""));
+                Navigator.of(context)
+                    .pop(Tuple3(wiki.name, wiki.uuid!, wiki.contentStr));
+              },
+              child: md.Text("创建新wiki：${controller.text}"),
+            )
           ],
         ));
   }
