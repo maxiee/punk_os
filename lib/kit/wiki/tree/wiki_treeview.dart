@@ -28,7 +28,7 @@ class _WikiTreeViewState extends State<WikiTreeView> {
         },
         child: Padding(
           padding: const EdgeInsets.all(6.0),
-          child: Text(prefixName(level) + wiki.name),
+          child: FittedBox(child: Text(prefixName(level) + wiki.name)),
         ),
       ));
       ret.add(Container(height: 1, color: Colors.grey.shade300));

@@ -90,7 +90,7 @@ class _WikiPageState extends State<WikiPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: 150,
+              width: 200,
               child: Expanded(child: WikiTreeView(wiki: wiki)),
             ),
             Expanded(

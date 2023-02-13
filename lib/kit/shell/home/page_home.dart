@@ -9,6 +9,7 @@ import 'package:punk_os/kit/task/task/task_service.dart';
 import 'package:punk_os/kit/wiki/wiki_dashboard.dart';
 import 'package:punk_os/kit/wiki/wiki_model.dart';
 import 'package:punk_os/kit/wiki/wiki_service.dart';
+import 'package:punk_os/utils/date_util.dart';
 import 'package:tuple/tuple.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -83,6 +84,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
                     },
                     child: const Text('编辑器测试页')),
+                MaterialButton(
+                    onPressed: () async {
+                      String wikiName = DateUtil.today();
+                      Navigator.of(context).pushNamed("/wiki", arguments: {
+                        'wiki': getWikiByName(wikiName) ??
+                            saveWiki(Wiki(
+                                name: wikiName, content: "", contentStr: ""))
+                      });
+                    },
+                    child: const Text('日记')),
               ],
             )
           ],
