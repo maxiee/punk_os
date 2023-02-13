@@ -20,6 +20,9 @@ class _WikiTreeViewState extends State<WikiTreeView> {
   @override
   void initState() {}
 
+  /// Tuple2
+  ///     Wiki：当前项的 Wiki
+  ///     WikiLink：从 Widget.wiki 到当前项 Wiki 的 WikiLink
   Widget refresh(List<Tuple2<Wiki, WikiLink?>> wikis, {level = 0}) {
     List<Widget> ret = [];
     for (Tuple2<Wiki, WikiLink?> wiki in wikis) {
@@ -31,6 +34,8 @@ class _WikiTreeViewState extends State<WikiTreeView> {
         },
         child: ContextMenuRegion(
           contextMenu: GenericContextMenu(buttonConfigs: [
+            ContextMenuButtonConfig("添加子链接",
+                onPressed: () => onLinkWiki(wiki.item1)),
             ContextMenuButtonConfig("删除链接", onPressed: () {
               if (wiki.item2 != null) {
                 setState(() {
@@ -67,7 +72,7 @@ class _WikiTreeViewState extends State<WikiTreeView> {
     return sb.toString();
   }
 
-  void onLinkWiki() {
+  void onLinkWiki(Wiki from) {
     Navigator.of(context)
         .push(MaterialPageRoute(
             builder: (ctx) => const WikiSearchPage(initText: "", initLink: "")))
@@ -75,7 +80,7 @@ class _WikiTreeViewState extends State<WikiTreeView> {
       // name uuid content
       wiki as Tuple3<String, String, String>;
       setState(() {
-        saveWikiLink(WikiLink(fromUUID: widget.wiki.uuid!, toUUID: wiki.item2));
+        saveWikiLink(WikiLink(fromUUID: from.uuid!, toUUID: wiki.item2));
       });
     });
   }
@@ -89,7 +94,9 @@ class _WikiTreeViewState extends State<WikiTreeView> {
           const Text('wiki 层级', style: TextStyle(fontWeight: FontWeight.bold)),
           refresh([Tuple2(widget.wiki, null)], level: 0),
           const SizedBox(height: 10),
-          MaterialButton(onPressed: onLinkWiki, child: const Text('链接Wiki'))
+          MaterialButton(
+              onPressed: () => onLinkWiki(widget.wiki),
+              child: const Text('链接Wiki'))
         ],
       ),
     );
