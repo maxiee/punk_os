@@ -91,8 +91,9 @@ class _WikiPageState extends State<WikiPage> {
           children: [
             SizedBox(
               width: 200,
-              child: Expanded(child: WikiTreeView(wiki: wiki)),
+              child: WikiTreeView(wiki: wiki),
             ),
+            Container(width: 1, color: Colors.grey.shade300),
             Expanded(
               child: Column(
                 children: [

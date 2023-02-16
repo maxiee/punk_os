@@ -46,7 +46,19 @@ class _WikiTreeViewState extends State<WikiTreeView> {
           ]),
           child: Padding(
             padding: const EdgeInsets.all(6.0),
-            child: FittedBox(child: Text(prefixName(level) + wiki.item1.name)),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(width: level * 14.0),
+                Expanded(
+                  child: Text(
+                    wiki.item1.name,
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ));
@@ -88,8 +100,7 @@ class _WikiTreeViewState extends State<WikiTreeView> {
   @override
   Widget build(BuildContext context) {
     return ContextMenuOverlay(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
         children: [
           const Text('wiki 层级', style: TextStyle(fontWeight: FontWeight.bold)),
           refresh([Tuple2(widget.wiki, null)], level: 0),
