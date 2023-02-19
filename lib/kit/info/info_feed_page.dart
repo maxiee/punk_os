@@ -13,7 +13,7 @@ class InfoFeedPage extends StatefulWidget {
 class _InfoFeedPageState extends State<InfoFeedPage> {
   static const _pageSize = 20;
   List<Map> dataList = [];
-  final PagingController<int, Map> _pagingController =
+  final PagingController<int, Info> _pagingController =
       PagingController(firstPageKey: 0);
 
   @override
@@ -32,7 +32,7 @@ class _InfoFeedPageState extends State<InfoFeedPage> {
 
   Future<void> _fetchPage(int pageKey) async {
     print('_fetchPage $pageKey');
-    final ret = getInfoPage(pageKey, _pageSize);
+    final ret = await fetchInfo(pageKey, _pageSize);
     final isLastPage = ret.length < _pageSize;
     if (isLastPage) {
       _pagingController.appendLastPage(ret);
@@ -46,10 +46,10 @@ class _InfoFeedPageState extends State<InfoFeedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text('信息流')),
-        body: PagedListView<int, Map>(
+        body: PagedListView<int, Info>(
           pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<Map>(
-            itemBuilder: (context, item, index) => InfoFeedCard(item.cast()),
+          builderDelegate: PagedChildBuilderDelegate<Info>(
+            itemBuilder: (context, item, index) => InfoFeedCard(item),
           ),
         ));
   }

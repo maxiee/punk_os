@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:punk_os/kit/info/info_service.dart';
 
 class InfoFeedCard extends StatelessWidget {
-  const InfoFeedCard(this.data, {super.key});
+  const InfoFeedCard(this.info, {super.key});
 
-  final Map<String, dynamic> data;
+  final Info info;
 
   @override
   Widget build(BuildContext context) {
@@ -14,15 +15,15 @@ class InfoFeedCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (data['site'].isNotEmpty) Text(data['site']),
+              if (info.site.isNotEmpty) Text(info.site),
               const SizedBox(height: 8),
-              Text(data['updated'], style: const TextStyle(color: Colors.grey)),
+              Text(info.updated.toString(), style: const TextStyle(color: Colors.grey)),
               const SizedBox(height: 8),
-              Text(data['title'],
+              Text(info.title,
                   style: TextStyle(
                       fontSize: 20, color: Colors.blue.shade900)),
               const SizedBox(height: 8),
-              Text(data['description'], style: const TextStyle(color: Colors.black87)),
+              Text(info.description, style: const TextStyle(color: Colors.black87)),
             ]),
       ),
     );
