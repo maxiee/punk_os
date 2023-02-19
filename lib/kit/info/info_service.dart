@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 
 class Info {
   final String title;
+  final List<dynamic> titleFC;
   final DateTime updated;
   final String url;
   final String site;
@@ -11,6 +12,7 @@ class Info {
 
   Info(
       {required this.title,
+      required this.titleFC,
       required this.updated,
       required this.url,
       required this.site,
@@ -20,6 +22,7 @@ class Info {
   factory Info.fromJson(Map<String, dynamic> json) {
     return Info(
       title: json['title'],
+      titleFC: json['title_fc'],
       updated: DateTime.parse(json['updated']),
       url: json['url'],
       site: json['site'],

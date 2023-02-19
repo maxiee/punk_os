@@ -19,13 +19,29 @@ class InfoFeedCard extends StatelessWidget {
               const SizedBox(height: 8),
               Text(info.updated.toString(), style: const TextStyle(color: Colors.grey)),
               const SizedBox(height: 8),
-              Text(info.title,
-                  style: TextStyle(
-                      fontSize: 20, color: Colors.blue.shade900)),
+              Wrap(children: parseTitle()),
               const SizedBox(height: 8),
               Text(info.description, style: const TextStyle(color: Colors.black87)),
             ]),
       ),
     );
+  }
+
+  List<Widget> parseTitle() {
+    List<Widget> ret = [];
+    if (info.titleFC.isEmpty) {
+      ret.add(Text(info.title,
+                  style: TextStyle(
+                      fontSize: 20, color: Colors.blue.shade900))); 
+    } else {
+      for (final fc in info.titleFC) {
+        ret.add(Text(fc,
+                  style: TextStyle(
+                      fontSize: 20, color: Colors.blue.shade900)));
+        ret.add(Text('/', style: TextStyle(
+                      fontSize: 20, color: Colors.purple.shade200)));
+      }
+    }
+    return ret;
   }
 }
