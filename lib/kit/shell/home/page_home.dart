@@ -94,6 +94,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
                     },
                     child: const Text('日记')),
+                MaterialButton(
+                    onPressed: () async {
+                      Navigator.of(context).pushNamed('/info_feed');
+                    },
+                    child: const Text('资讯')),
               ],
             )
           ],
