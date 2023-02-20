@@ -8,7 +8,7 @@ class Info {
   final String url;
   final String site;
   final String description;
-  final int like;
+  int like;
 
   Info(
       {required this.title,
@@ -49,6 +49,16 @@ Future<List<Info>> fetchInfo(int skip, int limit) async {
 Future addWord(String word) async {
   final response =
       await http.get(Uri.parse('http://127.0.0.1:1127/add_word?word=$word'));
+  if (response.statusCode == 200) {
+    return;
+  } else {
+    throw Exception('Failed to fetch data');
+  }
+}
+
+Future likeWord(String word) async {
+  final response =
+      await http.get(Uri.parse('http://127.0.0.1:1127/like_word?word=$word'));
   if (response.statusCode == 200) {
     return;
   } else {

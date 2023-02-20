@@ -13,6 +13,7 @@ class InfoFeedCard extends StatefulWidget {
 
 class _InfoFeedCardState extends State<InfoFeedCard> {
   late Info info;
+  final likeWordCache = <String>{};
 
   @override
   initState() {
@@ -26,7 +27,17 @@ class _InfoFeedCardState extends State<InfoFeedCard> {
     await addWord(input);
     final newCut = await cut(info.title);
     setState(() {
+      info.like = info.like + 1;
       info.titleFC = newCut;
+    });
+  }
+
+  onClickLikeWord(String word) async {
+    if (likeWordCache.contains(word)) return;
+    await likeWord(word);
+    setState(() {
+      info.like = info.like + 1;
+      likeWordCache.add(word);
     });
   }
 
@@ -41,19 +52,24 @@ class _InfoFeedCardState extends State<InfoFeedCard> {
             children: [
               if (info.site.isNotEmpty) Text(info.site),
               const SizedBox(height: 8),
-              Text(info.updated.toString(), style: const TextStyle(color: Colors.grey)),
+              Text(info.updated.toString(),
+                  style: const TextStyle(color: Colors.grey)),
               const SizedBox(height: 8),
               Wrap(children: parseTitle()),
               const SizedBox(height: 8),
-              Text(info.description, style: const TextStyle(color: Colors.black87)),
+              Text(info.description,
+                  style: const TextStyle(color: Colors.black87)),
               const SizedBox(height: 8),
               Container(height: 1, color: Colors.grey.shade300),
               const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  MaterialButton(onPressed: () => onClickAddWord(context), child: const Text('登记新词'))
-                ],)
+                  MaterialButton(
+                      onPressed: () => onClickAddWord(context),
+                      child: const Text('登记新词'))
+                ],
+              )
             ]),
       ),
     );
@@ -61,17 +77,24 @@ class _InfoFeedCardState extends State<InfoFeedCard> {
 
   List<Widget> parseTitle() {
     List<Widget> ret = [];
-    if (widget.info.titleFC.isEmpty) {
-      ret.add(Text(widget.info.title,
-                  style: TextStyle(
-                      fontSize: 20, color: Colors.blue.shade900))); 
+    ret.add(Text(info.like.toString(), style: const TextStyle(fontSize: 20, color: Colors.purple)));
+    ret.add(const SizedBox(width: 4));
+    if (info.titleFC.isEmpty) {
+      ret.add(Text(info.title,
+          style: TextStyle(fontSize: 20, color: Colors.blue.shade900)));
     } else {
-      for (final fc in widget.info.titleFC) {
-        ret.add(Text(fc,
-                  style: TextStyle(
-                      fontSize: 20, color: Colors.blue.shade900)));
-        ret.add(Text('/', style: TextStyle(
-                      fontSize: 20, color: Colors.purple.shade200)));
+      for (final fc in info.titleFC) {
+        ret.add(InkWell(
+          onTap: () => onClickLikeWord(fc),
+          child: Text(fc,
+              style: TextStyle(
+                  fontSize: 20,
+                  color: likeWordCache.contains(fc)
+                      ? Colors.red
+                      : Colors.blue.shade900)),
+        ));
+        ret.add(Text('/',
+            style: TextStyle(fontSize: 20, color: Colors.purple.shade200)));
       }
     }
     return ret;
