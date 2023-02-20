@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class Info {
   final String title;
-  final List<dynamic> titleFC;
+  List<dynamic> titleFC;
   final DateTime updated;
   final String url;
   final String site;
@@ -34,13 +34,34 @@ class Info {
 
 Future<List<Info>> fetchInfo(int skip, int limit) async {
   Utf8Decoder decode = const Utf8Decoder();
-  final response =
-      await http.get(Uri.parse('http://127.0.0.1:1127/info/list?skip=$skip&limit=$limit'));
+  final response = await http.get(
+      Uri.parse('http://127.0.0.1:1127/info/list?skip=$skip&limit=$limit'));
 
   if (response.statusCode == 200) {
     final List<dynamic> data = json.decode(decode.convert(response.bodyBytes));
     print(data);
     return data.map((json) => Info.fromJson(json)).toList();
+  } else {
+    throw Exception('Failed to fetch data');
+  }
+}
+
+Future addWord(String word) async {
+  final response =
+      await http.get(Uri.parse('http://127.0.0.1:1127/add_word?word=$word'));
+  if (response.statusCode == 200) {
+    return;
+  } else {
+    throw Exception('Failed to fetch data');
+  }
+}
+
+Future<List> cut(String words) async {
+  Utf8Decoder decode = const Utf8Decoder();
+  final response =
+      await http.get(Uri.parse('http://127.0.0.1:1127/cut?words=$words'));
+  if (response.statusCode == 200) {
+    return json.decode(decode.convert(response.bodyBytes));
   } else {
     throw Exception('Failed to fetch data');
   }

@@ -1,10 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:prompt_dialog/prompt_dialog.dart';
 import 'package:punk_os/kit/info/info_service.dart';
 
-class InfoFeedCard extends StatelessWidget {
+class InfoFeedCard extends StatefulWidget {
   const InfoFeedCard(this.info, {super.key});
 
   final Info info;
+
+  @override
+  State<InfoFeedCard> createState() => _InfoFeedCardState();
+}
+
+class _InfoFeedCardState extends State<InfoFeedCard> {
+  late Info info;
+
+  @override
+  initState() {
+    super.initState();
+    info = widget.info;
+  }
+
+  onClickAddWord(BuildContext context) async {
+    final input = await prompt(context, title: const Text('输入登记词'));
+    if (input == null || input.isEmpty) return;
+    await addWord(input);
+    final newCut = await cut(info.title);
+    setState(() {
+      info.titleFC = newCut;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +46,14 @@ class InfoFeedCard extends StatelessWidget {
               Wrap(children: parseTitle()),
               const SizedBox(height: 8),
               Text(info.description, style: const TextStyle(color: Colors.black87)),
+              const SizedBox(height: 8),
+              Container(height: 1, color: Colors.grey.shade300),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MaterialButton(onPressed: () => onClickAddWord(context), child: const Text('登记新词'))
+                ],)
             ]),
       ),
     );
@@ -29,12 +61,12 @@ class InfoFeedCard extends StatelessWidget {
 
   List<Widget> parseTitle() {
     List<Widget> ret = [];
-    if (info.titleFC.isEmpty) {
-      ret.add(Text(info.title,
+    if (widget.info.titleFC.isEmpty) {
+      ret.add(Text(widget.info.title,
                   style: TextStyle(
                       fontSize: 20, color: Colors.blue.shade900))); 
     } else {
-      for (final fc in info.titleFC) {
+      for (final fc in widget.info.titleFC) {
         ret.add(Text(fc,
                   style: TextStyle(
                       fontSize: 20, color: Colors.blue.shade900)));
