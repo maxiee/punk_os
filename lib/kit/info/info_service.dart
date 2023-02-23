@@ -7,8 +7,10 @@ class Info {
   final DateTime updated;
   final String url;
   final String site;
+  final String site_img;
   final String description;
   int like;
+  final List<String> images;
 
   Info(
       {required this.title,
@@ -16,6 +18,8 @@ class Info {
       required this.updated,
       required this.url,
       required this.site,
+      required this.site_img,
+      required this.images,
       required this.description,
       required this.like});
 
@@ -26,6 +30,8 @@ class Info {
       updated: DateTime.parse(json['updated']),
       url: json['url'],
       site: json['site'],
+      site_img: json['site_img'] ?? '',
+      images: (jsonDecode(json['images'] ?? "[]") as List<dynamic>).cast() ,
       description: json['description'],
       like: json['like'],
     );
@@ -39,7 +45,6 @@ Future<List<Info>> fetchInfo(int skip, int limit) async {
 
   if (response.statusCode == 200) {
     final List<dynamic> data = json.decode(decode.convert(response.bodyBytes));
-    print(data);
     return data.map((json) => Info.fromJson(json)).toList();
   } else {
     throw Exception('Failed to fetch data');
