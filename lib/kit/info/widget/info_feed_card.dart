@@ -61,13 +61,16 @@ class _InfoFeedCardState extends State<InfoFeedCard> {
                             File(info.site_img.replaceFirst('file://', ''))),
                       )),
                 if (info.site_img.isNotEmpty) const SizedBox(width: 8),
-                if (info.site.isNotEmpty) Text(info.site)
+                if (info.site.isNotEmpty) Text(info.site),
+                const Spacer(),
+                Text(info.like.toString(),
+                    style: const TextStyle(fontSize: 20, color: Colors.purple))
               ]),
               const SizedBox(height: 8),
               Text(info.updated.toString(),
                   style: const TextStyle(color: Colors.grey)),
               const SizedBox(height: 8),
-              Wrap(children: parseTitle()),
+              if (info.title.isNotEmpty) Wrap(children: parseTitle()),
               const SizedBox(height: 8),
               Text(info.description,
                   style: const TextStyle(color: Colors.black87)),
@@ -76,10 +79,13 @@ class _InfoFeedCardState extends State<InfoFeedCard> {
                 Wrap(
                     children: info.images
                         .map((e) => Container(
-                          width: MediaQuery.of(context).size.width * 0.9 / info.images.length,
-                          height: 200,
+                            width: MediaQuery.of(context).size.width *
+                                0.9 /
+                                info.images.length,
+                            height: 300,
                             child: Image.file(
-                                File(e.replaceFirst('file://', '')), fit: BoxFit.fitWidth,)))
+                                File(e.replaceFirst('file://', '')),
+                                fit: BoxFit.contain)))
                         .toList()),
               Container(height: 1, color: Colors.grey.shade300),
               const SizedBox(height: 8),
@@ -98,9 +104,6 @@ class _InfoFeedCardState extends State<InfoFeedCard> {
 
   List<Widget> parseTitle() {
     List<Widget> ret = [];
-    ret.add(Text(info.like.toString(),
-        style: const TextStyle(fontSize: 20, color: Colors.purple)));
-    ret.add(const SizedBox(width: 4));
     if (info.titleFC.isEmpty) {
       ret.add(Text(info.title,
           style: TextStyle(fontSize: 20, color: Colors.blue.shade900)));
