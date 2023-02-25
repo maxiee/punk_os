@@ -15,7 +15,7 @@ class InfoFeedCard extends StatefulWidget {
 
 class _InfoFeedCardState extends State<InfoFeedCard> {
   late Info info;
-  final likeWordCache = <String>{};
+  static final likeWordCache = <String>{};
 
   @override
   initState() {
@@ -28,10 +28,12 @@ class _InfoFeedCardState extends State<InfoFeedCard> {
     if (input == null || input.isEmpty) return;
     await addWord(input);
     final newCut = await cut(info.title);
+    final newCutDescription = await cut(info.description);
     setState(() {
-      info.like = info.like + 1;
       info.titleFC = newCut;
+      info.descriptionFC = newCutDescription;
     });
+    return input;
   }
 
   onClickLikeWord(String word) async {
@@ -72,8 +74,7 @@ class _InfoFeedCardState extends State<InfoFeedCard> {
               const SizedBox(height: 8),
               if (info.title.isNotEmpty) Wrap(children: parseTitle()),
               const SizedBox(height: 8),
-              Text(info.description,
-                  style: const TextStyle(color: Colors.black87)),
+              Wrap(children: parseDescription()),
               const SizedBox(height: 8),
               if (info.images.isNotEmpty)
                 Wrap(
@@ -94,7 +95,13 @@ class _InfoFeedCardState extends State<InfoFeedCard> {
                 children: [
                   MaterialButton(
                       onPressed: () => onClickAddWord(context),
-                      child: const Text('登记新词'))
+                      child: const Text('登记新词')),
+                  MaterialButton(
+                      onPressed: () async {
+                        String newWord = await onClickAddWord(context);
+                        await onClickLikeWord(newWord);
+                      },
+                      child: const Text('登记新词&+1'))
                 ],
               )
             ]),
@@ -120,6 +127,27 @@ class _InfoFeedCardState extends State<InfoFeedCard> {
         ));
         ret.add(Text('/',
             style: TextStyle(fontSize: 20, color: Colors.purple.shade200)));
+      }
+    }
+    return ret;
+  }
+
+  List<Widget> parseDescription() {
+    List<Widget> ret = [];
+    if (info.descriptionFC.isEmpty) {
+      ret.add(Text(info.description,
+          style: const TextStyle(color: Colors.black87)));
+    } else {
+      for (final fc in info.descriptionFC) {
+        ret.add(InkWell(
+          onTap: () => onClickLikeWord(fc),
+          child: Text(fc,
+              style: TextStyle(
+                  color: likeWordCache.contains(fc)
+                      ? Colors.red
+                      : Colors.black87)),
+        ));
+        ret.add(Text('/', style: TextStyle(color: Colors.purple.shade200)));
       }
     }
     return ret;

@@ -9,6 +9,7 @@ class Info {
   final String site;
   final String site_img;
   final String description;
+  List<dynamic> descriptionFC;
   int like;
   final List<String> images;
 
@@ -21,6 +22,7 @@ class Info {
       required this.site_img,
       required this.images,
       required this.description,
+      required this.descriptionFC,
       required this.like});
 
   factory Info.fromJson(Map<String, dynamic> json) {
@@ -33,6 +35,7 @@ class Info {
       site_img: json['site_img'] ?? '',
       images: (jsonDecode(json['images'] ?? "[]") as List<dynamic>).cast() ,
       description: json['description'],
+      descriptionFC: json['description_fc'],
       like: json['like'],
     );
   }
