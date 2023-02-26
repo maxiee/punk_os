@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:punk_os/base/event_bus/event_bus.dart';
 import 'package:punk_os/constant.dart';
+import 'package:punk_os/kit/info/db_busy_page.dart';
 import 'package:punk_os/kit/info/info_feed_page.dart';
 import 'package:punk_os/kit/shell/home/page_home.dart';
 import 'package:punk_os/kit/task/task/page/task_detail_page.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         '/task_detail': (context) => const TaskDetailPage(),
         '/wiki': (context) => const WikiPage(),
         '/info_feed': (context) => const InfoFeedPage(),
+        '/db_busy':(context) => const DBBusyPage()
       },
       home: const MyHomePage(),
     );

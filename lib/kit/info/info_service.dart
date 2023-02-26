@@ -84,3 +84,16 @@ Future<List> cut(String words) async {
     throw Exception('Failed to fetch data');
   }
 }
+
+Future<bool> isDBBusy() async {
+  Utf8Decoder decode = const Utf8Decoder();
+  final response =
+      await http.get(Uri.parse('http://127.0.0.1:1127/is_db_busy'));
+  if (response.statusCode == 200) {
+    String ret = decode.convert(response.bodyBytes);
+    print('isDBBusy ret = $ret');
+    return ret == 'true';
+  } else {
+    throw Exception('Failed to fetch data');
+  }
+}

@@ -99,6 +99,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.of(context).pushNamed('/info_feed');
                     },
                     child: const Text('资讯')),
+                MaterialButton(
+                    onPressed: () async {
+                      Navigator.of(context).pushNamed('/db_busy');
+                    },
+                    child: const Text('RayInfo 繁忙状态')),
               ],
             )
           ],

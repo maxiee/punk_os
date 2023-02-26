@@ -95,13 +95,15 @@ class _InfoFeedCardState extends State<InfoFeedCard> {
                 children: [
                   MaterialButton(
                       onPressed: () => onClickAddWord(context),
-                      child: const Text('登记新词')),
+                      child: const Text('新词')),
                   MaterialButton(
                       onPressed: () async {
                         String newWord = await onClickAddWord(context);
                         await onClickLikeWord(newWord);
                       },
-                      child: const Text('登记新词&+1'))
+                      child: const Text('新词&+1')),
+                  MaterialButton(
+                      onPressed: () async {}, child: const Text('删除'))
                 ],
               )
             ]),
